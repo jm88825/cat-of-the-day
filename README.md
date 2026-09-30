@@ -141,23 +141,25 @@ Play Console.
 
 ### C. Build the Android App Bundle (AAB) with EAS (free tier)
 
-1. Create a free Expo account at <https://expo.dev/signup>.
-2. Log in and link the project:
-   ```bash
-   cd app
-   npx eas-cli@latest login
-   npx eas-cli@latest init          # creates the Expo project, adds its projectId to app.json
-   ```
-3. Build:
-   ```bash
-   npx eas-cli@latest build -p android --profile production
-   ```
-   When asked, let EAS **generate a new Android keystore**. EAS stores it for
-   you, and every future update must be signed with this same key. When the
-   cloud build finishes, download the `.aab` from the link it prints.
-   (To test on a phone first: `--profile preview` builds an installable `.apk`.)
-   EAS manages `versionCode` (`appVersionSource: remote`, `autoIncrement`).
-   For each release, bump `version` in `app.json`.
+**Status: done for v1.0.0.** The EAS project is
+[`@jm88825s-team/cat-of-the-day`](https://expo.dev/accounts/jm88825s-team/projects/cat-of-the-day)
+(`extra.eas.projectId` and `owner` are in `app.json`). The Android upload
+keystore was generated in the cloud and is stored on EAS; view or back it up
+with `npx eas-cli@latest credentials -p android`.
+
+To build again (log in with `npx eas-cli@latest login`, or set an `EXPO_TOKEN`):
+
+```bash
+cd app
+npx eas-cli@latest build -p android --profile production   # .aab for Google Play
+npx eas-cli@latest build -p android --profile preview      # installable .apk for testing
+```
+
+Versioning is **local** (`appVersionSource: "local"` in `eas.json`). Before each
+new Play upload, raise `android.versionCode` in `app.json` (1 → 2 → 3 …). Play
+rejects duplicate versionCodes. Also bump `version` (for example 1.0.1) for
+user-visible releases. Free-tier EAS builds can wait in a queue for a while
+before they start.
 
 ### D. Upload to Google Play
 
