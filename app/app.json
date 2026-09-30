@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Cat of the Day",
+    "slug": "cat-of-the-day",
+    "scheme": "catoftheday",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "description": "One viral cat picture or video every day, with full credit to the original poster.",
+    "primaryColor": "#FF9A4D",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.catoftheday.app"
+    },
+    "android": {
+      "package": "com.catoftheday.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFE3C7",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "Cat of the Day",
+      "themeColor": "#FF9A4D",
+      "backgroundColor": "#FFF7EE"
+    },
+    "plugins": [
+      "expo-video",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#FFE3C7"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+
+# Expo / Metro / build output
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+*.tsbuildinfo
+
+# Generated native projects (Expo CNG) and temp prebuild copies
+/app/android/
+/app/ios/
+android/
+ios/
+.kotlin/
+*.apk
+*.aab
+*.ipa
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Logs / temp
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.tmp
+nohup.out
+
+# Secrets / signing keys / credentials (never commit)
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+credentials.json
+google-services.json
+GoogleService-Info.plist
+*service-account*.json
+play-store-key*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
