@@ -205,9 +205,15 @@ Play Console.
 
 ## Status
 
-- ✅ Picker verified locally (Reddit JSON blocked here; RSS worked).
+- Repo: <https://github.com/jm88825/cat-of-the-day>. GitHub Pages serves `main`
+  from the root folder.
+  - Data: <https://jm88825.github.io/cat-of-the-day/backend/data/latest.json>
+    (and `archive.json`)
+  - Privacy policy: <https://jm88825.github.io/cat-of-the-day/privacy.html>
+- ✅ The "Daily cat" workflow ran on GitHub's servers on 2026-09-30 and
+  committed data. Reddit's JSON API returned 403 there (www, old and api hosts);
+  the RSS fallback worked, so scores are `null` and the rank is shown instead.
 - ✅ Web build exported and screenshotted; TypeScript and `expo-doctor` pass;
   Android `expo prebuild` config checked (package, permissions, name).
-- ⚠️ Not yet tested: native Android build and playback on a device (including
-  DASH audio), the GitHub Actions run on GitHub's servers, and GitHub Pages
-  hosting.
+- ⚠️ Not yet tested: the native Android build and playback on a device
+  (including DASH audio).
