@@ -28,7 +28,8 @@
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.SYSTEM_ALERT_WINDOW"
       ],
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -48,6 +49,12 @@
           "backgroundColor": "#FFE3C7"
         }
       ]
-    ]
+    ],
+    "owner": "jm88825s-team",
+    "extra": {
+      "eas": {
+        "projectId": "5d746ede-0551-4e06-a5f5-9ee1f12d221d"
+      }
+    }
   }
 }

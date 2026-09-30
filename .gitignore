@@ -55,3 +55,6 @@ play-store-key*.json
 Thumbs.db
 .idea/
 .vscode/
+
+# Downloaded EAS build artifacts
+builds/
