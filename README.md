@@ -10,7 +10,7 @@ cat-of-the-day/
 │   ├── config.ts             ← the ONE place the data URL is set
 │   ├── App.tsx, src/         screens, components
 │   ├── app.json, eas.json    Expo + EAS build config (Android AAB)
-│   └── assets/               original generated icon / splash
+│   └── assets/               app icon / splash (source photo in assets/source/)
 ├── backend/
 │   ├── pick_cat.py           daily picker (Python 3.9+, stdlib only)
 │   ├── serve.py              local test server (port 8081, with CORS)
@@ -20,7 +20,7 @@ cat-of-the-day/
 ├── privacy.html / PRIVACY.md  privacy policy (served by GitHub Pages)
 ├── store-assets/             512px Play icon + 1024x500 feature graphic
 ├── screenshots/              web-build screenshots (390x844)
-└── tools/                    icon generator + screenshot scripts (Node + Chrome)
+└── tools/                    icon + screenshot + sound-check scripts
 ```
 
 ## How it works
@@ -42,10 +42,20 @@ cat-of-the-day/
    - If every source fails, it exits with an error and leaves the existing data
      alone.
    - `v.redd.it` videos: `mediaUrl` is Reddit's direct MP4 (the same file as the
-     API's `fallback_url`). **These MP4s have no audio**, because Reddit keeps
-     audio in a separate track. The picker also saves the `dashUrl` manifest,
-     which does include audio. On Android the app plays that manifest, so tap to
-     unmute works there. The web build uses the silent MP4.
+     API's `fallback_url`). **These MP4s are video-only**, because Reddit keeps
+     the audio in a separate track that only its streaming manifests reference.
+     So the picker also saves `hlsUrl` (`HLSPlaylist.m3u8`) and `dashUrl`
+     (`DASHPlaylist.mpd`) and checks that they list an audio track (`hasAudio`).
+     If ffmpeg is installed, it also measures loudness (`audioMeanDb`) and flags
+     nearly inaudible clips (`audioQuiet`).
+   - The app plays **HLS first, then DASH (Android only), then the silent MP4**.
+     If a stream fails or loads without audio, it moves to the next one. The
+     sound button only appears when the playing stream really has audio;
+     otherwise it says "No sound in this clip". Desktop browsers get the silent
+     MP4, because Chrome can't play Reddit's HLS natively.
+   - `python3 backend/pick_cat.py --refresh-media` re-derives these fields for
+     every stored video. Normal daily runs fill them in for older entries
+     automatically.
 2. **Hosting** – `backend/data/*.json` are plain static files. GitHub Pages
    serves them for free, and the GitHub Actions workflow refreshes them every
    day.
@@ -89,8 +99,12 @@ On an Android emulator, set `EXPO_PUBLIC_DATA_URL=http://10.0.2.2:8081`. On a re
 `http://<your-PC-LAN-IP>:8081`. Release builds only allow `https://`, so
 production must use your GitHub Pages URL.
 
-Regenerate the icons: `cd tools && npm install && node make-icons.mjs` (uses
-Google Chrome). Retake the screenshots: `node tools/screenshot.mjs` while the
+Regenerate the icons from `app/assets/source/kitten-icon-source.png`:
+`python3 -m venv tools/.venv && tools/.venv/bin/pip install pillow && tools/.venv/bin/python tools/make-icons.py`.
+This also writes masked launcher previews to `store-assets/previews/`. Feature
+graphic: `cd tools && npm install && node make-feature-graphic.mjs` (uses
+Google Chrome). After changing `EXPO_PUBLIC_DATA_URL`, add `--clear` to
+`expo export` / `expo start` so the new value is picked up. Retake the screenshots: `node tools/screenshot.mjs` while the
 web build is served on port 8090 (`cd app/dist && python3 -m http.server 8090`).
 
 ---
@@ -177,7 +191,7 @@ before they start.
      is user-generated.
    - **Content rating** questionnaire: the app shows user-generated content from
      third-party sites. Say so honestly.
-4. **Store listing:** use `store-assets/play-icon-512.png`,
+4. **Store listing:** use `store-assets/icon-512.png`,
    `store-assets/feature-graphic-1024x500.png`, and at least 2 phone
    screenshots. Take them on a real device or emulator. `screenshots/` has web
    previews.
@@ -217,5 +231,7 @@ before they start.
   the RSS fallback worked, so scores are `null` and the rank is shown instead.
 - ✅ Web build exported and screenshotted; TypeScript and `expo-doctor` pass;
   Android `expo prebuild` config checked (package, permissions, name).
-- ⚠️ Not yet tested: the native Android build and playback on a device
-  (including DASH audio).
+- ✅ Stream audio checked: ffprobe/ffmpeg and Chrome's hls.js/dash.js decode
+  audio from the HLS and DASH manifests; the MP4 files have no audio track.
+- ⚠️ Native sound on a real phone still has to be confirmed with the new
+  build.

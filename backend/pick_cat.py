@@ -26,7 +26,9 @@ import html
 import json
 import os
 import re
+import shutil
 import struct
+import subprocess
 import sys
 import time
 import urllib.error
@@ -152,53 +154,137 @@ def probe_image(url: str) -> dict:
     return out
 
 
-def vreddit_info(vid_url: str) -> dict | None:
-    """Resolve a v.redd.it link to a direct MP4 via its DASH manifest.
+def hls_audio(base: str) -> tuple[str | None, bool]:
+    """Return (hlsUrl, has_audio) for a v.redd.it video, checking the master playlist.
 
-    The JSON API exposes `fallback_url`; the manifest lists the same
-    progressive MP4 renditions (DASH_720.mp4 / CMAF_720.mp4). These files are
-    video-only — Reddit serves audio as a separate track — so `hasAudio`
-    tells the app whether the DASH manifest (Android can play it) has sound.
+    The HLS master lists separate audio renditions (EXT-X-MEDIA TYPE=AUDIO) and
+    mp4a codecs when the clip has sound. ExoPlayer (Android) and AVPlayer (iOS)
+    both play it with audio.
+    """
+    url = f"{base}/HLSPlaylist.m3u8"
+    status, _, body = http_get(url, retries=1)
+    text = body.decode("utf-8", "replace") if body else ""
+    if status != 200 or not text.startswith("#EXTM3U"):
+        return None, False
+    has_audio = ("TYPE=AUDIO" in text) or ("mp4a" in text)
+    return url, has_audio
+
+
+QUIET_MEAN_DB = -45.0  # below this the track is practically inaudible on a phone
+
+
+def audio_loudness(url: str, seconds: int = 30) -> tuple[float | None, float | None]:
+    """Optional: mean/max volume (dB) of the first audio track via ffmpeg.
+
+    Only runs if ffmpeg is installed; returns (None, None) otherwise.
+    """
+    if not shutil.which("ffmpeg"):
+        return None, None
+    try:
+        r = subprocess.run(
+            ["ffmpeg", "-nostats", "-hide_banner", "-user_agent", USER_AGENT, "-i", url,
+             "-map", "0:a:0", "-t", str(seconds), "-af", "volumedetect", "-f", "null", "-"],
+            capture_output=True, text=True, timeout=90)
+    except Exception as e:
+        log(f"ffmpeg loudness check failed: {e}")
+        return None, None
+    mean = re.search(r"mean_volume: (-?[\d.]+) dB", r.stderr)
+    peak = re.search(r"max_volume: (-?[\d.]+) dB", r.stderr)
+    return (float(mean.group(1)) if mean else None, float(peak.group(1)) if peak else None)
+
+
+def vreddit_info(vid_url: str) -> dict | None:
+    """Resolve a v.redd.it link to playable sources.
+
+    - mediaUrl: progressive MP4 (the JSON API's `fallback_url` / CMAF_720.mp4).
+      **Video-only**: Reddit keeps audio in a separate track, so this file is
+      always silent. It's used as the last fallback and for the web build.
+    - hlsUrl:   HLSPlaylist.m3u8 (video + audio). The app prefers it on native.
+    - dashUrl:  DASHPlaylist.mpd (video + audio). Android-only fallback.
+    - hasAudio: True only if a stream we store actually lists an audio track.
     """
     m = re.match(r"https?://v\.redd\.it/([A-Za-z0-9]+)", vid_url)
     if not m:
         return None
     base = f"https://v.redd.it/{m.group(1)}"
-    status, _, body = http_get(base + "/DASHPlaylist.mpd")
-    if status != 200:
-        return None
-    try:
-        root = ET.fromstring(body)
-    except ET.ParseError:
-        return None
-    ns = {"d": "urn:mpeg:dash:schema:mpd:2011"}
+    status, _, body = http_get(base + "/DASHPlaylist.mpd", retries=1)
     best = None
-    has_audio = False
-    for aset in root.iter("{urn:mpeg:dash:schema:mpd:2011}AdaptationSet"):
-        ctype = aset.get("contentType", "")
-        for rep in aset.findall("d:Representation", ns):
-            mime = rep.get("mimeType", aset.get("mimeType", ""))
-            if ctype == "audio" or mime.startswith("audio"):
-                has_audio = True
-                continue
-            h = int(rep.get("height", 0) or 0)
-            w = int(rep.get("width", 0) or 0)
-            url_el = rep.find("d:BaseURL", ns)
-            if url_el is None or not url_el.text:
-                continue
-            # Prefer the largest rendition up to 1080p (phone-friendly).
-            if min(w, h) <= 1080 and (best is None or h * w > best[0] * best[1]):
-                best = (w, h, url_el.text.strip())
-    if not best:
+    dash_audio = False
+    dash_url = None
+    if status == 200:
+        try:
+            root = ET.fromstring(body)
+        except ET.ParseError:
+            root = None
+        if root is not None:
+            dash_url = f"{base}/DASHPlaylist.mpd"
+            ns = {"d": "urn:mpeg:dash:schema:mpd:2011"}
+            for aset in root.iter("{urn:mpeg:dash:schema:mpd:2011}AdaptationSet"):
+                ctype = aset.get("contentType", "")
+                for rep in aset.findall("d:Representation", ns):
+                    mime = rep.get("mimeType", aset.get("mimeType", ""))
+                    if ctype == "audio" or mime.startswith("audio"):
+                        dash_audio = True
+                        continue
+                    h = int(rep.get("height", 0) or 0)
+                    w = int(rep.get("width", 0) or 0)
+                    url_el = rep.find("d:BaseURL", ns)
+                    if url_el is None or not url_el.text:
+                        continue
+                    # Prefer the largest rendition up to 1080p (phone-friendly).
+                    if min(w, h) <= 1080 and (best is None or h * w > best[0] * best[1]):
+                        best = (w, h, url_el.text.strip())
+    hls_url, hls_has_audio = hls_audio(base)
+    if not best and not hls_url:
         return None
-    w, h, name = best
-    return {
-        "mediaUrl": f"{base}/{name}",
-        "dashUrl": f"{base}/DASHPlaylist.mpd",
-        "hasAudio": has_audio,
-        "width": w,
-        "height": h,
+    out = {
+        "hlsUrl": hls_url,
+        "dashUrl": dash_url,
+        "hasAudio": bool(hls_has_audio or dash_audio),
+        "hlsHasAudio": hls_has_audio if hls_url else None,
+        "dashHasAudio": dash_audio if dash_url else None,
+        "mp4HasAudio": False,
     }
+    audio_src = hls_url if hls_has_audio else (dash_url if dash_audio else None)
+    if audio_src:
+        mean_db, max_db = audio_loudness(audio_src)
+        out["audioMeanDb"], out["audioMaxDb"] = mean_db, max_db
+        out["audioQuiet"] = None if mean_db is None else mean_db < QUIET_MEAN_DB
+    if best:
+        w, h, name = best
+        out.update({"mediaUrl": f"{base}/{name}", "width": w, "height": h})
+    else:
+        out["mediaUrl"] = hls_url
+    return out
+
+
+VIDEO_KEYS = ("hlsUrl", "dashUrl", "hasAudio", "hlsHasAudio", "dashHasAudio", "mp4HasAudio",
+              "audioMeanDb", "audioMaxDb", "audioQuiet")
+
+
+def refresh_video_sources(days: list[dict], only_missing: bool = True) -> int:
+    """Add hlsUrl/dashUrl/hasAudio to stored v.redd.it entries (derived from the id)."""
+    changed = 0
+    for d in days:
+        if d.get("mediaType") != "video":
+            continue
+        src = d.get("mediaUrl") or ""
+        if "v.redd.it/" not in src:
+            continue
+        if only_missing and "hlsUrl" in d and d.get("hlsUrl"):
+            continue
+        info = vreddit_info(src)
+        if not info:
+            log(f"refresh: {d.get('date')} {src} -> no manifests reachable")
+            continue
+        for k in VIDEO_KEYS:
+            if k in info:
+                d[k] = info[k]
+        changed += 1
+        log(f"refresh: {d.get('date')} hls={'yes' if info.get('hlsUrl') else 'no'} "
+            f"dash={'yes' if info.get('dashUrl') else 'no'} hasAudio={info.get('hasAudio')} "
+            f"meanDb={info.get('audioMeanDb')} quiet={info.get('audioQuiet')}")
+    return changed
 
 
 def classify_media(url: str, reddit_video: dict | None = None,
@@ -212,23 +298,17 @@ def classify_media(url: str, reddit_video: dict | None = None,
     path = p.path.lower()
 
     if host == "v.redd.it":
-        info = None
-        if reddit_video and reddit_video.get("fallback_url"):
-            info = {
-                "mediaUrl": reddit_video["fallback_url"],
-                "dashUrl": reddit_video.get("dash_url"),
-                "hasAudio": None,  # unknown from JSON alone; checked below
-                "width": reddit_video.get("width"),
-                "height": reddit_video.get("height"),
-            }
-            mpd = vreddit_info(url)
-            if mpd:
-                info["hasAudio"] = mpd["hasAudio"]
-                info["dashUrl"] = info["dashUrl"] or mpd["dashUrl"]
-        else:
-            info = vreddit_info(url)
+        info = vreddit_info(url)
+        if info is None and reddit_video and reddit_video.get("fallback_url"):
+            info = {"mediaUrl": reddit_video["fallback_url"],
+                    "hlsUrl": reddit_video.get("hls_url"),
+                    "dashUrl": reddit_video.get("dash_url"),
+                    "hasAudio": None, "mp4HasAudio": False}
         if not info:
             return None
+        if reddit_video:
+            info["width"] = info.get("width") or reddit_video.get("width")
+            info["height"] = info.get("height") or reddit_video.get("height")
         info["mediaType"] = "video"
         return info
 
@@ -241,7 +321,7 @@ def classify_media(url: str, reddit_video: dict | None = None,
                                     headers={"Range": "bytes=0-1023"})
                 if st not in (200, 206):
                     return None
-                return {"mediaType": "video", "mediaUrl": mp4, "hasAudio": None}
+                return {"mediaType": "video", "mediaUrl": mp4, "hasAudio": None, "mp4HasAudio": None}
             if not re.search(r"\.(jpe?g|png|gif|webp)$", path):
                 # imgur.com/abc (single image page) -> try the direct file
                 if "/a/" in path or "/gallery/" in path:
@@ -420,9 +500,9 @@ def choose(posts: list[dict], source: str, exclude: set[str]) -> dict | None:
             "thumbnail": p.get("thumbnail"),
         }
         if media["mediaType"] == "video":
-            pick["dashUrl"] = media.get("dashUrl")
-            pick["hasAudio"] = media.get("hasAudio")
-            pick["mp4HasAudio"] = False if "redd.it" in media["mediaUrl"] else None
+            for k in VIDEO_KEYS:
+                if k in media:
+                    pick[k] = media[k]
         if source == "reddit-rss":
             pick["rank"] = p.get("rank")
         return pick
@@ -455,6 +535,8 @@ def save(pick: dict, data_dir: str) -> None:
     cutoff = (dt.date.fromisoformat(pick["date"])
               - dt.timedelta(days=ARCHIVE_DAYS - 1)).isoformat()
     days = [d for d in days if d["date"] >= cutoff][:ARCHIVE_DAYS]
+    # Older entries saved before hlsUrl existed get their audio-capable URLs now.
+    refresh_video_sources([d for d in days if d["date"] != pick["date"]])
     now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     write_json(os.path.join(data_dir, "latest.json"), pick)
     write_json(archive_path, {"updatedAt": now, "days": days})
@@ -577,11 +659,27 @@ def main(argv=None) -> int:
                     help="record this pick (e.g. an X post) instead of querying Reddit")
     ap.add_argument("--backfill", type=int, metavar="N",
                     help="also fill up to N empty past days (max 30) from Reddit's top-of-week/month")
+    ap.add_argument("--refresh-media", action="store_true",
+                    help="re-derive hlsUrl/dashUrl/hasAudio for every stored v.redd.it video and exit")
     ap.add_argument("--dry-run", action="store_true", help="print pick, do not write files")
     ap.add_argument("--force", action="store_true",
                     help="re-pick even if today already has a pick")
     args = ap.parse_args(argv)
     date = args.date or today_et()
+
+    if args.refresh_media:
+        archive_path = os.path.join(args.data_dir, "archive.json")
+        archive = load_json(archive_path, {"days": []})
+        n = refresh_video_sources(archive.get("days", []), only_missing=False)
+        latest_path = os.path.join(args.data_dir, "latest.json")
+        latest = load_json(latest_path, {})
+        match = next((d for d in archive.get("days", []) if d.get("date") == latest.get("date")), None)
+        if not args.dry_run:
+            write_json(archive_path, archive)
+            if match:
+                write_json(latest_path, match)
+        log(f"refresh-media: updated {n} video entries")
+        return 0
 
     if args.from_json:
         pick = import_pick(args.from_json, date)

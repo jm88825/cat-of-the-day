@@ -36,7 +36,13 @@
       "rank": 2,
       "source": "reddit-rss",
       "scoreLabel": "upvotes",
-      "pickedAt": "2026-09-30T00:48:47+00:00"
+      "pickedAt": "2026-09-30T00:48:47+00:00",
+      "hlsUrl": "https://v.redd.it/b8f8any65ish1/HLSPlaylist.m3u8",
+      "hlsHasAudio": true,
+      "dashHasAudio": true,
+      "audioMeanDb": -16.6,
+      "audioMaxDb": -5.3,
+      "audioQuiet": false
     },
     {
       "date": "2026-09-28",
@@ -93,7 +99,13 @@
       "source": "reddit-rss",
       "scoreLabel": "upvotes",
       "backfilled": true,
-      "pickedAt": "2026-09-30T00:53:07+00:00"
+      "pickedAt": "2026-09-30T00:53:07+00:00",
+      "hlsUrl": "https://v.redd.it/4m7j15wqwyrh1/HLSPlaylist.m3u8",
+      "hlsHasAudio": true,
+      "dashHasAudio": true,
+      "audioMeanDb": -50.9,
+      "audioMaxDb": -32.9,
+      "audioQuiet": true
     },
     {
       "date": "2026-09-25",
@@ -132,7 +144,13 @@
       "source": "reddit-rss",
       "scoreLabel": "upvotes",
       "backfilled": true,
-      "pickedAt": "2026-09-30T00:53:09+00:00"
+      "pickedAt": "2026-09-30T00:53:09+00:00",
+      "hlsUrl": "https://v.redd.it/uvtarndajirh1/HLSPlaylist.m3u8",
+      "hlsHasAudio": true,
+      "dashHasAudio": true,
+      "audioMeanDb": -28.7,
+      "audioMaxDb": -12.6,
+      "audioQuiet": false
     },
     {
       "date": "2026-09-23",

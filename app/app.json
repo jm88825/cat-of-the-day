@@ -16,10 +16,9 @@
     "android": {
       "package": "com.catoftheday.app",
       "adaptiveIcon": {
-        "backgroundColor": "#FFE3C7",
+        "backgroundColor": "#F3C9A9",
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundImage": "./assets/android-icon-background.png"
       },
       "permissions": [],
       "blockedPermissions": [
@@ -29,7 +28,7 @@
         "android.permission.SYSTEM_ALERT_WINDOW"
       ],
       "predictiveBackGestureEnabled": false,
-      "versionCode": 1
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -44,9 +43,9 @@
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",
-          "imageWidth": 200,
+          "imageWidth": 220,
           "resizeMode": "contain",
-          "backgroundColor": "#FFE3C7"
+          "backgroundColor": "#F3C9A9"
         }
       ]
     ],

@@ -58,3 +58,7 @@ Thumbs.db
 
 # Downloaded EAS build artifacts
 builds/
+
+# Icon candidates / scratch images (the chosen one lives in app/assets/source/)
+/icon-option-*.png
+/kitten-icon-*.png

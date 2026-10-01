@@ -14,9 +14,15 @@ export interface CatPick {
   width?: number | null;
   height?: number | null;
   thumbnail?: string | null;
-  dashUrl?: string | null; // v.redd.it DASH manifest (has audio; Android)
-  hasAudio?: boolean | null;
-  mp4HasAudio?: boolean | null;
+  hlsUrl?: string | null; // v.redd.it HLS master playlist (video + audio)
+  dashUrl?: string | null; // v.redd.it DASH manifest (video + audio; Android only)
+  hasAudio?: boolean | null; // true if any stored stream has an audio track
+  hlsHasAudio?: boolean | null;
+  dashHasAudio?: boolean | null;
+  mp4HasAudio?: boolean | null; // Reddit MP4s are video-only → false
+  audioMeanDb?: number | null; // measured loudness (if ffmpeg was available)
+  audioMaxDb?: number | null;
+  audioQuiet?: boolean | null; // track exists but is nearly inaudible
   source?: string; // reddit-json | reddit-rss | x | manual
   pickedAt?: string;
 }

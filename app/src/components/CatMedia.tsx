@@ -37,49 +37,121 @@ export default function CatMedia({ pick }: { pick: CatPick }) {
   );
 }
 
-function CatVideo({ pick }: { pick: CatPick }) {
-  // Reddit's MP4 files are video-only. The DASH manifest carries the audio
-  // track, and Android's player (ExoPlayer) can play DASH — so use it there.
-  const canUseDash = Platform.OS === 'android' && !!pick.dashUrl && pick.hasAudio === true;
-  const [useDash, setUseDash] = useState(canUseDash);
-  const source = useMemo<VideoSource>(
-    () => (useDash && pick.dashUrl ? { uri: pick.dashUrl, contentType: 'dash' } : { uri: pick.mediaUrl }),
-    [useDash, pick.dashUrl, pick.mediaUrl],
-  );
-  const soundAvailable = useDash || pick.mp4HasAudio === true;
+type StreamKind = 'hls' | 'dash' | 'mp4';
+interface Stream { kind: StreamKind; source: VideoSource; audio: boolean }
 
-  const player = useVideoPlayer(source, (p) => {
+function webCanPlayHls(): boolean {
+  if (Platform.OS !== 'web' || typeof document === 'undefined') return false;
+  // Chrome answers "maybe" but can't play Reddit's CMAF HLS natively, so only
+  // try it on Safari-style browsers. Elsewhere the web build uses the silent MP4.
+  const ua = globalThis.navigator?.userAgent ?? '';
+  if (/Chrome|Chromium|CriOS|Edg|Firefox|Android/i.test(ua)) return false;
+  return document.createElement('video').canPlayType('application/vnd.apple.mpegurl') !== '';
+}
+
+/**
+ * Playable streams in order of preference.
+ *
+ * Reddit's MP4 files (mediaUrl) are VIDEO-ONLY. Sound lives in a separate
+ * audio track that only the HLS and DASH manifests reference. So:
+ *   1. HLS  (HLSPlaylist.m3u8): Android ExoPlayer + iOS AVPlayer, with audio
+ *   2. DASH (DASHPlaylist.mpd): Android only, with audio
+ *   3. MP4: silent fallback (and what desktop browsers play)
+ */
+export function streamsFor(pick: CatPick): Stream[] {
+  const out: Stream[] = [];
+  const native = Platform.OS === 'android' || Platform.OS === 'ios';
+  const anyAudio = pick.hasAudio === true;
+  if (pick.hlsUrl && (native || webCanPlayHls())) {
+    out.push({ kind: 'hls', source: { uri: pick.hlsUrl, contentType: 'hls' },
+      audio: pick.hlsHasAudio ?? anyAudio });
+  }
+  if (pick.dashUrl && Platform.OS === 'android') {
+    out.push({ kind: 'dash', source: { uri: pick.dashUrl, contentType: 'dash' },
+      audio: pick.dashHasAudio ?? anyAudio });
+  }
+  out.push({ kind: 'mp4', source: { uri: pick.mediaUrl }, audio: pick.mp4HasAudio === true });
+  return out;
+}
+
+function CatVideo({ pick }: { pick: CatPick }) {
+  const streams = useMemo(() => streamsFor(pick), [pick]);
+  const [index, setIndex] = useState(0);
+  const stream = streams[Math.min(index, streams.length - 1)];
+  const hasNext = index < streams.length - 1;
+  // A new player per stream: if HLS fails, try DASH, then the silent MP4.
+  return (
+    <StreamPlayer
+      key={`${stream.kind}:${index}`}
+      pick={pick}
+      stream={stream}
+      onFail={hasNext ? () => setIndex((i) => i + 1) : undefined}
+    />
+  );
+}
+
+function StreamPlayer({ pick, stream, onFail }:
+  { pick: CatPick; stream: Stream; onFail?: () => void }) {
+  const player = useVideoPlayer(stream.source, (p) => {
     p.loop = true;
-    p.muted = true; // autoplay muted
+    p.volume = 1;
+    p.muted = true; // autoplay muted, tap to unmute
     p.play();
   });
   const { muted } = useEvent(player, 'mutedChange', { muted: player.muted });
   const { status } = useEvent(player, 'statusChange', { status: player.status });
+  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
   const [firstFrame, setFirstFrame] = useState(false);
 
-  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
+  useEventListener(player, 'statusChange', ({ status: s, error }) => {
+    if (s === 'error') {
+      console.warn(`[CatVideo] ${stream.kind} failed: ${error?.message ?? 'unknown error'}`);
+      onFail?.();
+    }
+  });
+
+  // On Android/iOS the player reports the audio tracks it actually found. If a
+  // stream that should have sound loads without any, try the next stream.
+  const [loadedWithoutAudio, setLoadedWithoutAudio] = useState(false);
+  useEventListener(player, 'sourceLoad', ({ availableAudioTracks }) => {
+    if (Platform.OS === 'web' || !stream.audio) return;
+    if (availableAudioTracks.length === 0) {
+      console.warn(`[CatVideo] ${stream.kind} loaded without audio tracks`);
+      if (onFail) onFail();
+      else setLoadedWithoutAudio(true);
+    } else if (player.audioTrack == null) {
+      player.audioTrack = availableAudioTracks[0];
+    }
+  });
+  const soundAvailable = stream.audio && !loadedWithoutAudio;
+
   // Autoplay: on web the <video> element may mount after the setup callback ran,
   // so (re)start playback once the source is ready.
   useEffect(() => {
-    if (status === 'readyToPlay' && !isPlaying) {
-      player.play();
-    }
+    if (status === 'readyToPlay' && !isPlaying) player.play();
   }, [status, isPlaying, player]);
-
-  useEventListener(player, 'statusChange', ({ status: s }) => {
-    if (s === 'error' && useDash) setUseDash(false); // fall back to the silent MP4
-  });
 
   const toggleSound = () => {
     if (!soundAvailable) return;
-    player.muted = !player.muted;
-    if (!player.playing) player.play();
+    if (player.muted) {
+      player.muted = false;
+      player.volume = 1; // make sure we're not unmuting at volume 0
+      if (!player.playing) player.play();
+    } else {
+      player.muted = true;
+    }
   };
 
+  const label = status === 'error'
+    ? '⚠️ Video unavailable'
+    : !soundAvailable
+      ? '🔇 No sound in this clip'
+      : muted
+        ? pick.audioQuiet ? '🔇 Tap for sound (very quiet clip)' : '🔇 Tap for sound'
+        : '🔊 Sound on · tap to mute';
+
   return (
-    <Pressable style={StyleSheet.absoluteFill} onPress={toggleSound}
-      accessibilityRole="button"
-      accessibilityLabel={soundAvailable ? (muted ? 'Unmute video' : 'Mute video') : 'Video without sound'}>
+    <View style={StyleSheet.absoluteFill}>
       {!firstFrame && pick.thumbnail ? (
         <Image source={{ uri: pick.thumbnail }} style={StyleSheet.absoluteFill} contentFit="contain" />
       ) : null}
@@ -90,18 +162,21 @@ function CatVideo({ pick }: { pick: CatPick }) {
         nativeControls={false}
         playsInline
         onFirstFrameRender={() => setFirstFrame(true)}
-        pointerEvents="none"
       />
-      <View style={styles.badge} pointerEvents="none">
-        <Text style={styles.badgeText}>
-          {status === 'error'
-            ? '⚠️ Video unavailable'
-            : soundAvailable
-              ? muted ? '🔇 Tap for sound' : '🔊 Sound on'
-              : '🔇 No sound in this clip'}
-        </Text>
-      </View>
-    </Pressable>
+      {/* Touch layer drawn ABOVE the native video surface so taps always reach JS. */}
+      <Pressable
+        style={StyleSheet.absoluteFill}
+        onPress={toggleSound}
+        disabled={!soundAvailable}
+        accessibilityRole="button"
+        accessibilityLabel={soundAvailable ? (muted ? 'Unmute video' : 'Mute video') : 'Video without sound'}
+        testID="video-sound-toggle"
+      >
+        <View style={[styles.badge, soundAvailable && muted && styles.badgeCta]}>
+          <Text style={styles.badgeText}>{label}</Text>
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
@@ -121,6 +196,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  badgeText: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  badgeCta: { backgroundColor: 'rgba(224,119,42,0.92)' },
+  badgeText: { color: '#fff', fontSize: 13, fontWeight: '700' },
 });
 
