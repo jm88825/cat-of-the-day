@@ -1,6 +1,32 @@
 {
-  "updatedAt": "2026-09-30T19:37:43+00:00",
+  "updatedAt": "2026-10-01T13:27:44+00:00",
   "days": [
+    {
+      "date": "2026-10-01",
+      "title": "Had to put our lil guy down today, this is his big orange brother taking care of him before we had to say goodbye",
+      "subreddit": "cats",
+      "author": "katieofgilead",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/cats/comments/1wus5f8/had_to_put_our_lil_guy_down_today_this_is_his_big/",
+      "mediaType": "video",
+      "mediaUrl": "https://v.redd.it/gkcbn32gvssh1/CMAF_720.mp4",
+      "width": 720,
+      "height": 1280,
+      "thumbnail": "https://external-preview.redd.it/ZXlicTQ2MWd2c3NoMY3_p6QL-yN2ZOw9Or5vxCLRNzqjhSY74xXmmcBbFI9S.jpeg?width=320&crop=smart&auto=webp&s=84e0e8fb6cd3c693edf64e327639fbb88776f5b8",
+      "hlsUrl": "https://v.redd.it/gkcbn32gvssh1/HLSPlaylist.m3u8",
+      "dashUrl": "https://v.redd.it/gkcbn32gvssh1/DASHPlaylist.mpd",
+      "hasAudio": true,
+      "hlsHasAudio": true,
+      "dashHasAudio": true,
+      "mp4HasAudio": false,
+      "audioMeanDb": -39.5,
+      "audioMaxDb": -6.9,
+      "audioQuiet": false,
+      "rank": 4,
+      "source": "reddit-rss",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-01T13:27:44+00:00"
+    },
     {
       "date": "2026-09-30",
       "title": "Arrived home to this. I don’t own a cat.",
