@@ -1,0 +1,25 @@
+{
+  "source": "x",
+  "date": "2026-10-03",
+  "postUrl": "https://x.com/Dan0nat0r/status/2105954343447056828",
+  "authorHandle": "Dan0nat0r",
+  "authorName": "Dani 🗽",
+  "likes": 2,
+  "title": "my other kitten walked up and just sat on top of him",
+  "text": "I was petting my kitten, and my other kitten walked up and just sat on top of him..???",
+  "blurb": "Their human was petting one fluffy cream kitten when the other walked up and sat right on top of him. Sibling logic, captured mid-pile on the bed.",
+  "xMedia": {
+    "duration_ms": 5633,
+    "height": 1280,
+    "media_key": "13_2105954322542370817",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2105954322542370817/img/XLbrKHlBWnyq-qze.jpg",
+    "type": "video",
+    "variants": [
+      {"bit_rate": 632000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2105954322542370817/vid/avc1/320x568/HNZjLMDGkxpVwP2t.mp4"},
+      {"bit_rate": 950000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2105954322542370817/vid/avc1/480x852/cQJK4CS9Z1LcR-to.mp4"},
+      {"bit_rate": 2176000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2105954322542370817/vid/avc1/720x1280/Oq-sVkGmy9XKJex9.mp4"},
+      {"content_type": "application/x-mpegURL", "url": "https://video.twimg.com/amplify_video/2105954322542370817/pl/NDPnIM8HDIe_Ppkt.m3u8"}
+    ],
+    "width": 720
+  }
+}
