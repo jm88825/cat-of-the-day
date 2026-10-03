@@ -25,12 +25,25 @@ cat-of-the-day/
 
 ## How it works
 
-1. **Picker** – `backend/pick_cat.py` looks at today's top posts in
-   r/cats, r/catpictures, r/catvideos, r/Catswithjobs, r/CatsAreAssholes,
-   r/catsstandingup and r/aww (r/aww only when the title mentions
-   cat/kitten/kitty). It skips NSFW posts, galleries and anything that isn't an
-   image, GIF or video on `i.redd.it`, `v.redd.it` or Imgur, then takes the
-   highest-ranked one.
+1. **Picker** – `backend/pick_cat.py` reads today's top ~100 posts from one
+   multireddit: r/cats, r/catpictures, r/catvideos, r/Catswithjobs,
+   r/CatsAreAssholes, r/catsstandingup, r/aww (only titles mentioning
+   cat/kitten/kitty), r/StartledCats, r/catbellies, r/SupermodelCats,
+   r/catsareliquid, r/blackcats, r/IllegallySmolCats, r/Catloaf, r/CatsInSinks,
+   r/TuxedoCats and r/OneOrangeBraincell. It skips NSFW posts, galleries and
+   anything that isn't an image, GIF or video on `i.redd.it`, `v.redd.it` or
+   Imgur.
+   - **Hidden gems, not the #1 post:** it skips the day's top 3 (everyone has
+     already seen those), drops posts that were already a cat of the day (by
+     permalink / Reddit id) and, when possible, everything from yesterday's
+     subreddit. From the next ≤60 candidates it draws a weighted-random post:
+     weight = 1/√(position) ÷ √(posts from that subreddit), so higher-ranked
+     posts are a bit likelier but small subs get a fair shot. The random seed is
+     the date, so re-running on the same day gives the same pick. `--top`
+     restores the old "highest-ranked post" behaviour; `--seed X` re-rolls.
+   - **X picks:** a separate daily routine can replace the Reddit pick with a
+     quirky/heartwarming X post, and add a 1–2 sentence `blurb` to any day.
+     See [`backend/X_PICK.md`](backend/X_PICK.md).
    - It tries Reddit's JSON listing first (www → old → api.reddit.com); this
      gives real upvote counts.
    - If that's blocked (it often is for servers and cloud IPs; it was blocked
@@ -68,12 +81,15 @@ python3 backend/pick_cat.py                 # pick today's cat (date = today in 
 python3 backend/pick_cat.py --dry-run       # show the pick without writing files
 python3 backend/pick_cat.py --backfill 7    # fill empty past days (marked "backfilled": true)
 python3 backend/pick_cat.py --from-json my-pick.json   # record an X (or other) post instead
+python3 backend/pick_cat.py --set-blurb "Text."         # add/replace today's blurb ("" removes it)
+python3 backend/pick_cat.py --top                       # old behaviour: highest-ranked post
 ```
 
-`--from-json` needs `title`, `author`, `permalink` (the https link to the
-original post), `mediaType` (`image` | `gif` | `video`) and `mediaUrl`. You can
-also add `score`, `scoreLabel` (for example `"likes"`), `width`, `height`,
-`thumbnail` and `date`. See `backend/example-x-pick.json`. Once a day has a
+For X posts, see [`backend/X_PICK.md`](backend/X_PICK.md) and
+`backend/example-x-pick.json`. Other manual picks need `title`, `author`,
+`permalink` (the https link to the original post), `mediaType`
+(`image` | `gif` | `video`) and `mediaUrl`, optionally `score`, `scoreLabel`,
+`width`, `height`, `thumbnail`, `blurb` and `date`. Once a day has a
 manual pick, the scheduled run won't overwrite it unless you pass `--force`.
 **Only use media you're allowed to show, and always link the original post.**
 

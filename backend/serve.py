@@ -27,8 +27,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8081)
     ap.add_argument("--bind", default="0.0.0.0")
+    ap.add_argument("--dir", default=DATA, help="data directory to serve (default: backend/data)")
     a = ap.parse_args()
-    handler = functools.partial(Handler, directory=DATA)
+    handler = functools.partial(Handler, directory=a.dir)
     with http.server.ThreadingHTTPServer((a.bind, a.port), handler) as srv:
-        print(f"Serving {DATA} at http://{a.bind}:{a.port}/", flush=True)
+        print(f"Serving {a.dir} at http://{a.bind}:{a.port}/", flush=True)
         srv.serve_forever()

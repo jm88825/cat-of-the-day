@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ArchiveScreen from './src/screens/ArchiveScreen';
 import DayScreen from './src/screens/DayScreen';
@@ -9,6 +9,16 @@ import { colors } from './src/theme';
 import type { CatPick } from './src/types';
 
 type Tab = 'today' | 'archive';
+
+// video.twimg.com (X videos) returns 403 when a browser sends a non-X Referer.
+// Native players send none; on web, tell the browser not to send one either.
+if (Platform.OS === 'web' && typeof document !== 'undefined'
+  && !document.querySelector('meta[name="referrer"]')) {
+  const meta = document.createElement('meta');
+  meta.name = 'referrer';
+  meta.content = 'no-referrer';
+  document.head.appendChild(meta);
+}
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('today');

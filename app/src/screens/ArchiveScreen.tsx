@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
 import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { fetchArchive } from '../api';
+import SourceBadge from '../components/SourceBadge';
 import { ErrorState, Loading } from '../components/States';
 import { creditLine, formatDate, popularityLabel } from '../format';
 import { colors } from '../theme';
@@ -45,7 +46,10 @@ function Row({ pick, onPress }: { pick: CatPick; onPress: () => void }) {
         {pick.mediaType === 'video' ? <Text style={styles.play}>▶</Text> : null}
       </View>
       <View style={styles.rowText}>
-        <Text style={styles.date}>{formatDate(pick.date, 'short')}</Text>
+        <View style={styles.dateRow}>
+          <Text style={styles.date}>{formatDate(pick.date, 'short')}</Text>
+          <SourceBadge pick={pick} small />
+        </View>
         <Text style={styles.title} numberOfLines={2}>{pick.title}</Text>
         <Text style={styles.meta} numberOfLines={1}>{popularityLabel(pick)}</Text>
         <Text style={styles.meta} numberOfLines={1}>{creditLine(pick)}</Text>
@@ -82,6 +86,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 6,
   },
   rowText: { flex: 1, gap: 3 },
+  dateRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   date: { color: colors.accentDark, fontWeight: '800', fontSize: 12.5, textTransform: 'uppercase' },
   title: { color: colors.text, fontWeight: '700', fontSize: 16, lineHeight: 21 },
   meta: { color: colors.muted, fontSize: 12.5 },

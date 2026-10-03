@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Cat of the Day picker (Python 3.9+, standard library only).
 
-Finds today's most viral cat post on Reddit and writes:
+Picks a random "hidden gem" cat post from a broad pool of Reddit cat
+subreddits (today's top ~100, skipping the top 3 already-famous posts) and writes:
   data/latest.json   - today's pick
   data/archive.json  - newest first, last 60 days (one entry per date)
 
@@ -13,7 +14,9 @@ Source order (first one that yields usable posts wins):
      ranking and `score` is written as null — never guessed)
 
 Alternative: record a pick chosen elsewhere (e.g. an X post) with
-  python3 pick_cat.py --from-json pick.json
+  python3 pick_cat.py --from-json pick.json        (see X_PICK.md)
+Add/replace the short blurb on today's entry with
+  python3 pick_cat.py --set-blurb "Two sentences about the cat."
 
 Nothing is ever fabricated: if every source fails the script exits non-zero and
 leaves the existing data files untouched.
@@ -34,13 +37,26 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import random
 import xml.etree.ElementTree as ET
 
+# One multireddit RSS request covers all of these (checked 2026-10-02: every
+# one resolves; small subs only contribute a few posts per day).
 SUBREDDITS = ["cats", "catpictures", "catvideos", "Catswithjobs",
-              "CatsAreAssholes", "catsstandingup", "aww"]
+              "CatsAreAssholes", "catsstandingup", "aww", "StartledCats",
+              "catbellies", "SupermodelCats", "catsareliquid", "blackcats",
+              "IllegallySmolCats", "Catloaf", "CatsInSinks", "TuxedoCats",
+              "OneOrangeBraincell"]
 # Subreddits whose posts must mention a cat in the title to count.
 TITLE_FILTERED = {"aww"}
 CAT_WORDS = re.compile(r"\b(cats?|kittens?|kitty|kitties|kitten's|cat's)\b", re.I)
+
+# Random "hidden gem" selection (see choose_random()).
+SKIP_TOP = 3          # the top N of the day are the already-discovered ones
+POOL_SIZE = 60        # consider at most this many ranked candidates after the skip
+SAME_SUB_PENALTY = 0.15   # weight multiplier for yesterday's subreddit (only
+                          # matters when fewer than 3 posts from other subs exist)
+MAX_MEDIA_TRIES = 15  # media probes per run (each costs an HTTP request or two)
 
 USER_AGENT = os.environ.get(
     "CATOTD_USER_AGENT",
@@ -472,40 +488,115 @@ def fetch_reddit_rss(period: str = "day") -> tuple[list[dict], str] | None:
 # Picking
 # --------------------------------------------------------------------------
 
-def choose(posts: list[dict], source: str, exclude: set[str]) -> dict | None:
+def reddit_id(url: str | None) -> str | None:
+    m = re.search(r"/comments/([a-z0-9]+)", url or "", re.I)
+    return m.group(1).lower() if m else None
+
+
+def ranked(posts: list[dict], source: str) -> list[dict]:
+    """Posts in Reddit's own top-of-day order, with 1-based `rank` set."""
     if source == "reddit-json":
         ordered = sorted(posts, key=lambda p: p.get("score") or 0, reverse=True)
-    else:
-        ordered = sorted(posts, key=lambda p: p.get("rank", 10 ** 6))
-    for p in ordered:
-        if p["permalink"] in exclude:
-            continue
-        if p.get("is_gallery"):
-            continue
-        if not is_cat_post(p["subreddit"], p["title"]):
+        for i, p in enumerate(ordered, start=1):
+            p.setdefault("rank", i)
+        return ordered
+    return sorted(posts, key=lambda p: p.get("rank", 10 ** 6))
+
+
+def is_excluded(p: dict, exclude: set[str]) -> bool:
+    return p["permalink"] in exclude or (reddit_id(p["permalink"]) or p.get("id")) in exclude
+
+
+def build_pick(p: dict, media: dict, source: str) -> dict:
+    pick = {
+        "title": p["title"],
+        "subreddit": p["subreddit"],
+        "author": p["author"],
+        "score": p.get("score"),
+        "permalink": p["permalink"],
+        "mediaType": media["mediaType"],
+        "mediaUrl": media["mediaUrl"],
+        "width": media.get("width"),
+        "height": media.get("height"),
+        "thumbnail": p.get("thumbnail"),
+    }
+    if media["mediaType"] == "video":
+        for k in VIDEO_KEYS:
+            if k in media:
+                pick[k] = media[k]
+    if source == "reddit-rss" or p.get("rank"):
+        pick["rank"] = p.get("rank")
+    return pick
+
+
+def eligible(p: dict, exclude: set[str]) -> bool:
+    return (not is_excluded(p, exclude) and not p.get("is_gallery")
+            and is_cat_post(p["subreddit"], p["title"]))
+
+
+def choose(posts: list[dict], source: str, exclude: set[str]) -> dict | None:
+    """Deterministic: the highest-ranked usable post (used by --backfill / --top)."""
+    for p in ranked(posts, source):
+        if not eligible(p, exclude):
             continue
         media = classify_media(p["url"], p.get("reddit_video"))
+        if media:
+            return build_pick(p, media, source)
+    return None
+
+
+def candidate_weights(pool: list[dict], avoid_sub: str | None) -> list[float]:
+    """Weight = mild preference for higher rank x boost for less common subs
+    x penalty for yesterday's subreddit.
+
+    - rank: 1/sqrt(position in pool) -> #4 is ~4x likelier than #60, not 60x.
+    - subreddit balance: r/cats often fills a third of the list; dividing by
+      sqrt(posts from that sub) gives small subs a real chance.
+    - yesterday's subreddit is normally filtered out before this (see
+      choose_random); the penalty only applies on thin days.
+    """
+    counts: dict[str, int] = {}
+    for p in pool:
+        counts[p["subreddit"].lower()] = counts.get(p["subreddit"].lower(), 0) + 1
+    out = []
+    for i, p in enumerate(pool, start=1):
+        w = 1.0 / (i ** 0.5)
+        w /= counts[p["subreddit"].lower()] ** 0.5
+        if avoid_sub and p["subreddit"].lower() == avoid_sub.lower():
+            w *= SAME_SUB_PENALTY
+        out.append(w)
+    return out
+
+
+def choose_random(posts: list[dict], source: str, exclude: set[str],
+                  rng: random.Random, avoid_sub: str | None = None,
+                  skip_top: int = SKIP_TOP) -> dict | None:
+    """A weighted-random "hidden gem": skip the day's top `skip_top`, then draw
+    from the next POOL_SIZE eligible posts until one has usable media."""
+    ordered = [p for p in ranked(posts, source) if not p.get("is_gallery")]
+    pool = [p for p in ordered[skip_top:] if eligible(p, exclude)][:POOL_SIZE]
+    if not pool:  # tiny day: fall back to the top ones rather than nothing
+        pool = [p for p in ordered if eligible(p, exclude)][:POOL_SIZE]
+    # Variety: never yesterday's subreddit when anything else is available.
+    if avoid_sub:
+        others = [p for p in pool if p["subreddit"].lower() != avoid_sub.lower()]
+        if len(others) >= 3:
+            pool = others
+    log(f"random pool: {len(pool)} candidates (skipped top {skip_top}; "
+        f"avoiding r/{avoid_sub or '-'}); subs: "
+        + ", ".join(sorted({p['subreddit'] for p in pool})))
+    tries = 0
+    while pool and tries < MAX_MEDIA_TRIES:
+        weights = candidate_weights(pool, avoid_sub)
+        idx = rng.choices(range(len(pool)), weights=weights, k=1)[0]
+        p = pool.pop(idx)
+        tries += 1
+        media = classify_media(p["url"], p.get("reddit_video"))
         if not media:
+            log(f"  #{p.get('rank')} r/{p['subreddit']} skipped (no usable media)")
             continue
-        pick = {
-            "title": p["title"],
-            "subreddit": p["subreddit"],
-            "author": p["author"],
-            "score": p.get("score"),
-            "permalink": p["permalink"],
-            "mediaType": media["mediaType"],
-            "mediaUrl": media["mediaUrl"],
-            "width": media.get("width"),
-            "height": media.get("height"),
-            "thumbnail": p.get("thumbnail"),
-        }
-        if media["mediaType"] == "video":
-            for k in VIDEO_KEYS:
-                if k in media:
-                    pick[k] = media[k]
-        if source == "reddit-rss":
-            pick["rank"] = p.get("rank")
-        return pick
+        log(f"  picked #{p.get('rank')} r/{p['subreddit']} after {tries} tries")
+        return build_pick(p, media, source)
     return None
 
 
@@ -543,40 +634,234 @@ def save(pick: dict, data_dir: str) -> None:
     log(f"wrote {data_dir}/latest.json and archive.json ({len(days)} days)")
 
 
-REQUIRED_IMPORT = ["title", "author", "permalink", "mediaType", "mediaUrl"]
+BLURB_MAX = 300
+X_STATUS = re.compile(r"^https://(?:x|twitter)\.com/([A-Za-z0-9_]{1,15})/status/(\d+)")
+X_MEDIA_HOSTS = ("pbs.twimg.com", "video.twimg.com")
+X_MAX_BITRATE = 2_500_000  # phone-friendly: best MP4 at or under ~2.5 Mbps
 
 
-def import_pick(path: str, date: str) -> dict:
-    """Import a manually chosen pick (e.g. an X post) from a JSON file."""
+def clean_blurb(text) -> str | None:
+    if text is None:
+        return None
+    t = re.sub(r"\s+", " ", str(text)).strip()
+    if not t:
+        return None
+    if len(t) > BLURB_MAX:
+        raise SystemExit(f"blurb is {len(t)} chars; keep it to 1-2 sentences (max {BLURB_MAX})")
+    return t
+
+
+def best_x_variant(variants: list[dict]) -> dict | None:
+    """Highest-bitrate MP4 at or under X_MAX_BITRATE (else the lowest MP4)."""
+    mp4s = [v for v in variants or [] if v.get("content_type") == "video/mp4" and v.get("url")]
+    if not mp4s:
+        return None
+    under = [v for v in mp4s if (v.get("bit_rate") or 0) <= X_MAX_BITRATE]
+    if under:
+        return max(under, key=lambda v: v.get("bit_rate") or 0)
+    return min(mp4s, key=lambda v: v.get("bit_rate") or 0)
+
+
+def x_media_fields(m: dict) -> dict:
+    """Turn an X API v2 media object (from includes.media) into our media fields."""
+    kind = m.get("type")
+    out: dict = {"width": m.get("width"), "height": m.get("height")}
+    if kind == "photo":
+        url = m.get("url")
+        out.update({"mediaType": "image", "mediaUrl": url,
+                    # small (~680px) rendition for archive rows / placeholders
+                    "thumbnail": f"{url}?name=small" if url and "?" not in url else None})
+        return out
+    if kind in ("video", "animated_gif"):
+        v = best_x_variant(m.get("variants") or [])
+        if not v:
+            raise SystemExit("X media has no MP4 variant")
+        hls = next((x["url"] for x in m.get("variants") or []
+                    if x.get("content_type") == "application/x-mpegURL"), None)
+        out.update({"mediaType": "video", "mediaUrl": v["url"],
+                    "thumbnail": m.get("preview_image_url"),
+                    "bitRate": v.get("bit_rate")})
+        if kind == "animated_gif":   # X GIFs are silent MP4s
+            out.update({"hasAudio": False, "mp4HasAudio": False, "xGif": True})
+        elif hls:
+            out["hlsUrl"] = hls
+        return out
+    raise SystemExit(f"unsupported X media type: {kind}")
+
+
+def probe_audio_ffprobe(url: str) -> bool | None:
+    """True/False if ffprobe can tell whether the file/stream has audio, else None."""
+    if not shutil.which("ffprobe"):
+        return None
+    try:
+        r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=codec_type",
+                            "-of", "csv=p=0", url], capture_output=True, text=True, timeout=45)
+    except Exception:
+        return None
+    if r.returncode != 0:
+        return None
+    return "audio" in r.stdout.split()
+
+
+def x_video_audio(pick: dict) -> None:
+    """Fill hasAudio / mp4HasAudio / hlsHasAudio for an X video (MP4s carry audio)."""
+    if pick.get("mediaType") != "video" or pick.get("xGif"):
+        return
+    if pick.get("mp4HasAudio") is None:
+        a = probe_audio_ffprobe(pick["mediaUrl"])
+        pick["mp4HasAudio"] = True if a is None else a   # X video MP4s normally have AAC audio
+    if pick.get("hlsUrl"):
+        st, _, body = http_get(pick["hlsUrl"], retries=1)
+        text = body.decode("utf-8", "replace") if body else ""
+        if st == 200 and text.startswith("#EXTM3U"):
+            pick["hlsHasAudio"] = ("TYPE=AUDIO" in text) or ("mp4a" in text)
+        else:
+            log(f"X HLS playlist not reachable (HTTP {st}); dropping hlsUrl")
+            pick["hlsUrl"] = None
+            pick["hlsHasAudio"] = None
+    pick["hasAudio"] = bool(pick.get("mp4HasAudio") or pick.get("hlsHasAudio"))
+    src = pick["mediaUrl"] if pick.get("mp4HasAudio") else pick.get("hlsUrl")
+    if pick["hasAudio"] and src:
+        mean_db, max_db = audio_loudness(src)
+        pick["audioMeanDb"], pick["audioMaxDb"] = mean_db, max_db
+        pick["audioQuiet"] = None if mean_db is None else mean_db < QUIET_MEAN_DB
+
+
+def import_pick(path: str, date: str, data_dir: str | None = None) -> dict:
+    """Import a manually chosen pick from a JSON file (see X_PICK.md).
+
+    X picks: {"source": "x", "postUrl", "authorHandle", "authorName", "likes",
+              "text", "title"?, "blurb", and either "xMedia" (the media object
+              copied verbatim from the X API response) or "mediaType" + "mediaUrl"
+              (+ "thumbnail"/"posterUrl", "hlsUrl", "width", "height")}
+    Other picks need: title, author, permalink, mediaType, mediaUrl.
+    The legacy fields the shipped app reads (author, permalink, score,
+    scoreLabel, subreddit, thumbnail) are always filled in, so older app builds
+    still render X days correctly.
+    """
     raw = load_json(path, None)
     if not isinstance(raw, dict):
         raise SystemExit(f"{path}: expected a JSON object")
-    missing = [k for k in REQUIRED_IMPORT if not raw.get(k)]
-    if missing:
-        raise SystemExit(f"{path}: missing required fields: {', '.join(missing)}")
-    if raw["mediaType"] not in ("image", "gif", "video"):
+    post_url = raw.get("postUrl") or raw.get("permalink") or ""
+    is_x = raw.get("source") == "x" or bool(X_STATUS.match(post_url))
+    pick: dict = {"date": raw.get("date") or date}
+    if is_x:
+        m = X_STATUS.match(post_url)
+        if not m:
+            raise SystemExit(f"{path}: postUrl must look like https://x.com/<handle>/status/<id>")
+        post_url = f"https://x.com/{m.group(1)}/status/{m.group(2)}"
+        handle = str(raw.get("authorHandle") or raw.get("author") or m.group(1)).lstrip("@")
+        media = x_media_fields(raw["xMedia"]) if raw.get("xMedia") else {
+            k: raw.get(k) for k in ("mediaType", "mediaUrl", "width", "height", "hlsUrl",
+                                    "hasAudio", "mp4HasAudio")}
+        media.setdefault("thumbnail", None)
+        if raw.get("thumbnail") or raw.get("posterUrl"):
+            media["thumbnail"] = raw.get("posterUrl") or raw.get("thumbnail")
+        text = re.sub(r"\s*https://t\.co/\w+", "", str(raw.get("text") or "")).strip()
+        title = (raw.get("title") or "").strip()
+        if not title:
+            first = re.split(r"(?<=[.!?])\s|\n", text, maxsplit=1)[0].strip() if text else ""
+            title = first if len(first) <= 110 else first[:107].rstrip() + "…"
+        if not title:
+            raise SystemExit(f"{path}: X pick needs a title or text")
+        likes = raw.get("likes", raw.get("score"))
+        if likes is not None and not isinstance(likes, int):
+            raise SystemExit(f"{path}: likes must be an integer")
+        pick.update({
+            "title": title,
+            "subreddit": None,
+            "author": handle,                  # legacy credit field
+            "authorHandle": handle,
+            "authorName": raw.get("authorName"),
+            "score": likes,                    # legacy popularity field
+            "scoreLabel": "likes",
+            "likes": likes,
+            "permalink": post_url,             # legacy link field
+            "postUrl": post_url,
+            "postId": m.group(2),
+            "text": text or None,
+            **{k: v for k, v in media.items() if v is not None or k in ("width", "height", "thumbnail")},
+            "source": "x",
+        })
+        for k in ("mediaUrl", "thumbnail", "hlsUrl"):
+            u = pick.get(k)
+            if u and urllib.parse.urlparse(u).netloc not in X_MEDIA_HOSTS:
+                raise SystemExit(f"{path}: {k} must be on {' or '.join(X_MEDIA_HOSTS)} (got {u})")
+    else:
+        missing = [k for k in ["title", "author", "permalink", "mediaType", "mediaUrl"] if not raw.get(k)]
+        if missing:
+            raise SystemExit(f"{path}: missing required fields: {', '.join(missing)}")
+        source = raw.get("source") or "manual"
+        pick.update({
+            "title": raw["title"],
+            "subreddit": raw.get("subreddit"),
+            "author": str(raw["author"]).lstrip("@").replace("u/", "", 1),
+            "score": raw.get("score"),
+            "scoreLabel": raw.get("scoreLabel") or "upvotes",
+            "permalink": raw["permalink"],
+            "mediaType": raw["mediaType"],
+            "mediaUrl": raw["mediaUrl"],
+            "width": raw.get("width"),
+            "height": raw.get("height"),
+            "thumbnail": raw.get("thumbnail"),
+            "source": source,
+        })
+    if pick.get("mediaType") not in ("image", "gif", "video"):
         raise SystemExit(f"{path}: mediaType must be image, gif or video")
     for k in ("permalink", "mediaUrl"):
-        if not str(raw[k]).startswith("https://"):
+        if not str(pick.get(k) or "").startswith("https://"):
             raise SystemExit(f"{path}: {k} must be an https:// URL")
-    source = raw.get("source") or ("x" if re.search(r"//(x|twitter)\.com/", raw["permalink"]) else "manual")
-    pick = {
-        "date": raw.get("date") or date,
-        "title": raw["title"],
-        "subreddit": raw.get("subreddit"),   # null for non-Reddit posts
-        "author": str(raw["author"]).lstrip("@").replace("u/", "", 1),
-        "score": raw.get("score"),           # e.g. likes on X; null if unknown
-        "scoreLabel": raw.get("scoreLabel") or ("likes" if source == "x" else "upvotes"),
-        "permalink": raw["permalink"],
-        "mediaType": raw["mediaType"],
-        "mediaUrl": raw["mediaUrl"],
-        "width": raw.get("width"),
-        "height": raw.get("height"),
-        "thumbnail": raw.get("thumbnail"),
-        "source": source,
-        "pickedAt": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
-    }
+    if pick["mediaType"] in ("image", "gif"):
+        probe = probe_image(pick["mediaUrl"])
+        if not probe["ok"]:
+            raise SystemExit(f"{path}: mediaUrl is not reachable: {pick['mediaUrl']}")
+        if not pick.get("width") and "width" in probe:
+            pick["width"], pick["height"] = probe["width"], probe["height"]
+    elif is_x:
+        st, _, _ = http_get(pick["mediaUrl"], max_bytes=1024, headers={"Range": "bytes=0-1023"})
+        if st not in (200, 206):
+            raise SystemExit(f"{path}: video mediaUrl not reachable (HTTP {st})")
+        x_video_audio(pick)
+    blurb = clean_blurb(raw.get("blurb"))
+    if blurb:
+        pick["blurb"] = blurb
+    if data_dir:  # never re-use a post that already had its day
+        archive = load_json(os.path.join(data_dir, "archive.json"), {"days": []})
+        for d in archive.get("days", []):
+            if d.get("date") != pick["date"] and pick["permalink"] in (d.get("permalink"), d.get("postUrl")):
+                raise SystemExit(f"{path}: this post was already the cat of {d['date']}")
+    pick.pop("xGif", None)
+    pick["pickedAt"] = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     return pick
+
+
+def set_blurb(text: str, date: str, data_dir: str, dry_run: bool = False) -> int:
+    """Add/replace the blurb on `date`'s entry in latest.json + archive.json."""
+    blurb = clean_blurb(text)
+    archive_path = os.path.join(data_dir, "archive.json")
+    latest_path = os.path.join(data_dir, "latest.json")
+    archive = load_json(archive_path, {"days": []})
+    latest = load_json(latest_path, {})
+    entry = next((d for d in archive.get("days", []) if d.get("date") == date), None)
+    if entry is None:
+        log(f"set-blurb: no entry for {date} in archive.json")
+        return 2
+    if blurb:
+        entry["blurb"] = blurb
+    else:
+        entry.pop("blurb", None)
+    if latest.get("date") == date:
+        if blurb:
+            latest["blurb"] = blurb
+        else:
+            latest.pop("blurb", None)
+    print(json.dumps(entry, indent=2, ensure_ascii=False))
+    if not dry_run:
+        write_json(archive_path, archive)
+        if latest.get("date") == date:
+            write_json(latest_path, latest)
+        log(f"set-blurb: {'updated' if blurb else 'removed'} blurb for {date}")
+    return 0
 
 
 def post_date_et(p: dict) -> str | None:
@@ -635,7 +920,8 @@ def backfill(days: int, data_dir: str, today: str) -> int:
             log(f"backfill: no usable post published on {d}")
             continue
         used.add(pick["permalink"])
-        added.append({"date": d, **pick, "source": source, "scoreLabel": "upvotes",
+        added.append({"date": d, **pick, "source": "reddit",
+                      "fetchedVia": source.replace("reddit-", ""), "scoreLabel": "upvotes",
                       "backfilled": True,
                       "pickedAt": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()})
     if not added:
@@ -657,6 +943,13 @@ def main(argv=None) -> int:
     ap.add_argument("--date", default=None, help="override date (YYYY-MM-DD, default: today in ET)")
     ap.add_argument("--from-json", metavar="PICK_JSON",
                     help="record this pick (e.g. an X post) instead of querying Reddit")
+    ap.add_argument("--set-blurb", metavar="TEXT",
+                    help="add/replace the 1-2 sentence blurb on today's (or --date's) entry and exit; "
+                         "pass an empty string to remove it")
+    ap.add_argument("--top", action="store_true",
+                    help="pick the #1 usable post (old behaviour) instead of a random hidden gem")
+    ap.add_argument("--seed", default=None,
+                    help="random seed (default: the date, so re-runs on the same day agree)")
     ap.add_argument("--backfill", type=int, metavar="N",
                     help="also fill up to N empty past days (max 30) from Reddit's top-of-week/month")
     ap.add_argument("--refresh-media", action="store_true",
@@ -681,21 +974,30 @@ def main(argv=None) -> int:
         log(f"refresh-media: updated {n} video entries")
         return 0
 
+    if args.set_blurb is not None:
+        return set_blurb(args.set_blurb, date, args.data_dir, args.dry_run)
+
     if args.from_json:
-        pick = import_pick(args.from_json, date)
+        pick = import_pick(args.from_json, date, args.data_dir)
         print(json.dumps(pick, indent=2, ensure_ascii=False))
         if not args.dry_run:
             save(pick, args.data_dir)
         return 0
 
     latest = load_json(os.path.join(args.data_dir, "latest.json"), {})
-    if latest.get("date") == date and latest.get("source") in ("x", "manual") and not args.force:
+    if latest.get("date") == date and latest.get("source") not in (None, "reddit", "reddit-rss", "reddit-json") \
+            and not args.force:
         log(f"{date} already has a manual pick; keeping it (use --force to override)")
         return 0
 
     archive = load_json(os.path.join(args.data_dir, "archive.json"), {"days": []})
-    # Don't repeat a post that already won a previous day.
-    exclude = {d.get("permalink") for d in archive.get("days", []) if d.get("date") != date}
+    past = [d for d in archive.get("days", []) if d.get("date") != date]
+    # Don't repeat a post that already won a previous day (by permalink or Reddit id).
+    exclude = {d.get("permalink") for d in past} | {reddit_id(d.get("permalink")) for d in past}
+    exclude.discard(None)
+    yesterday = (dt.date.fromisoformat(date) - dt.timedelta(days=1)).isoformat()
+    avoid_sub = next((d.get("subreddit") for d in past if d.get("date") == yesterday), None)
+    rng = random.Random(args.seed or f"catotd-{date}")
 
     if args.backfill:
         return backfill(min(args.backfill, 30), args.data_dir, date)
@@ -711,11 +1013,16 @@ def main(argv=None) -> int:
             errors.append(f"{fetch.__name__}: no usable response")
             continue
         posts, source = got
-        pick = choose(posts, source, exclude)
+        if args.top:
+            pick = choose(posts, source, exclude)
+        else:
+            pick = choose_random(posts, source, exclude, rng, avoid_sub)
         if not pick:
             errors.append(f"{source}: no post with supported media")
             continue
-        pick = {"date": date, **pick, "source": source,
+        pick = {"date": date, **pick, "source": "reddit",
+                "fetchedVia": source.replace("reddit-", ""),
+                "selection": "top" if args.top else "random",
                 "scoreLabel": "upvotes",
                 "pickedAt": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()}
         print(json.dumps(pick, indent=2, ensure_ascii=False))

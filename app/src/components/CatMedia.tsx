@@ -57,6 +57,10 @@ function webCanPlayHls(): boolean {
  *   1. HLS  (HLSPlaylist.m3u8): Android ExoPlayer + iOS AVPlayer, with audio
  *   2. DASH (DASHPlaylist.mpd): Android only, with audio
  *   3. MP4: silent fallback (and what desktop browsers play)
+ *
+ * X (video.twimg.com) MP4s already include audio (mp4HasAudio: true), so on
+ * web and as the native fallback they play with sound; their HLS playlist is
+ * tried first on native just like Reddit's.
  */
 export function streamsFor(pick: CatPick): Stream[] {
   const out: Stream[] = [];
@@ -118,7 +122,10 @@ function StreamPlayer({ pick, stream, onFail }:
     if (availableAudioTracks.length === 0) {
       console.warn(`[CatVideo] ${stream.kind} loaded without audio tracks`);
       if (onFail) onFail();
-      else setLoadedWithoutAudio(true);
+      // X MP4s carry their own AAC track (checked by the picker). Media3 can
+      // list no track for a progressive MP4 whose format has no id, so trust
+      // the data and keep the sound button working instead of disabling it.
+      else if (!(stream.kind === 'mp4' && pick.mp4HasAudio === true)) setLoadedWithoutAudio(true);
     } else if (player.audioTrack == null) {
       player.audioTrack = availableAudioTracks[0];
     }

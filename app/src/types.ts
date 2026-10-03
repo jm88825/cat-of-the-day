@@ -23,7 +23,19 @@ export interface CatPick {
   audioMeanDb?: number | null; // measured loudness (if ffmpeg was available)
   audioMaxDb?: number | null;
   audioQuiet?: boolean | null; // track exists but is nearly inaudible
-  source?: string; // reddit-json | reddit-rss | x | manual
+  source?: string; // "reddit" | "x" (older entries: reddit-rss | reddit-json | manual)
+  fetchedVia?: string; // reddit: "rss" | "json"
+  selection?: string; // reddit: "random" (hidden gem) | "top"
+  blurb?: string | null; // 1–2 sentence description of the cat
+  // X (Twitter) picks. The legacy fields above are also filled in:
+  // author = handle, permalink = postUrl, score = likes, subreddit = null.
+  authorHandle?: string | null;
+  authorName?: string | null;
+  postUrl?: string | null;
+  postId?: string | null;
+  likes?: number | null;
+  text?: string | null; // the post's own text (t.co links removed)
+  bitRate?: number | null;
   pickedAt?: string;
 }
 
