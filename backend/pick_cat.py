@@ -985,9 +985,10 @@ def main(argv=None) -> int:
         return 0
 
     latest = load_json(os.path.join(args.data_dir, "latest.json"), {})
-    if latest.get("date") == date and latest.get("source") not in (None, "reddit", "reddit-rss", "reddit-json") \
-            and not args.force:
-        log(f"{date} already has a manual pick; keeping it (use --force to override)")
+    if latest.get("date") == date and not args.force and (
+            latest.get("source") not in (None, "reddit", "reddit-rss", "reddit-json")
+            or latest.get("blurb")):  # a curated (blurbed) Reddit pick also stays
+        log(f"{date} already has a curated pick; keeping it (use --force to override)")
         return 0
 
     archive = load_json(os.path.join(args.data_dir, "archive.json"), {"days": []})
