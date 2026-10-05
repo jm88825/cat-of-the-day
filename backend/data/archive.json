@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-04T18:21:58+00:00",
+  "updatedAt": "2026-10-05T13:29:08+00:00",
   "days": [
+    {
+      "date": "2026-10-05",
+      "title": "Lil bald belly",
+      "subreddit": "catbellies",
+      "author": "HeavyHevonen",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/catbellies/comments/1wxl7y8/lil_bald_belly/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/9k76xf4yihth1.jpeg",
+      "width": 3000,
+      "height": 4000,
+      "thumbnail": "https://preview.redd.it/9k76xf4yihth1.jpeg?width=640&crop=smart&auto=webp&s=9f349d451f3b70780c3d3292dffadece3c4eeb8d",
+      "rank": 97,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-05T13:29:08+00:00"
+    },
     {
       "date": "2026-10-04",
       "title": "Tiny teef while half a sleef",
