@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-05T13:52:00+00:00",
+  "updatedAt": "2026-10-06T13:25:37+00:00",
   "days": [
+    {
+      "date": "2026-10-06",
+      "title": "Today is Romeo’s 6th birthday! 🎂 🎉❤️",
+      "subreddit": "TuxedoCats",
+      "author": "pterodactylzombie",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/TuxedoCats/comments/1wyovgi/today_is_romeos_6th_birthday/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/qiel9dcorqth1.jpeg",
+      "width": 4284,
+      "height": 5712,
+      "thumbnail": "https://preview.redd.it/qiel9dcorqth1.jpeg?width=640&crop=smart&auto=webp&s=0f6e2b4705dca919493e7c21a74a406cee940adf",
+      "rank": 41,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-06T13:25:37+00:00"
+    },
     {
       "date": "2026-10-05",
       "title": "My kitten at 8 months is almost the size of an adult cat",
