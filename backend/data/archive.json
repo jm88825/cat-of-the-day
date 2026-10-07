@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-06T13:49:25+00:00",
+  "updatedAt": "2026-10-07T13:26:40+00:00",
   "days": [
+    {
+      "date": "2026-10-07",
+      "title": "Oranges waiting for their turn to get the one braincell",
+      "subreddit": "OneOrangeBraincell",
+      "author": "rutwikdshedge",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/OneOrangeBraincell/comments/1wz48ya/oranges_waiting_for_their_turn_to_get_the_one/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/egyah17wyuth1.jpeg",
+      "width": 3072,
+      "height": 4080,
+      "thumbnail": "https://preview.redd.it/egyah17wyuth1.jpeg?width=640&crop=smart&auto=webp&s=f01f82750d3bf60ab4511a0e516db32d24a6ce60",
+      "rank": 44,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-07T13:26:40+00:00"
+    },
     {
       "date": "2026-10-06",
       "title": "good meowning (my kitten)",
