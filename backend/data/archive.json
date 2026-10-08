@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-07T13:26:40+00:00",
+  "updatedAt": "2026-10-08T13:27:54+00:00",
   "days": [
+    {
+      "date": "2026-10-08",
+      "title": "My tuxedo cat is ready for halloween!",
+      "subreddit": "TuxedoCats",
+      "author": "CSKnox1129",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/TuxedoCats/comments/1x05cwf/my_tuxedo_cat_is_ready_for_halloween/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/2vfmh76ig3uh1.jpeg",
+      "width": 4284,
+      "height": 5712,
+      "thumbnail": "https://preview.redd.it/2vfmh76ig3uh1.jpeg?width=640&crop=smart&auto=webp&s=c34dc8611267c773e793ce55939ad6368e10f3af",
+      "rank": 39,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-08T13:27:54+00:00"
+    },
     {
       "date": "2026-10-07",
       "title": "Oranges waiting for their turn to get the one braincell",
