@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-09T14:12:48+00:00",
+  "updatedAt": "2026-10-10T13:22:40+00:00",
   "days": [
+    {
+      "date": "2026-10-10",
+      "title": "My little loaf",
+      "subreddit": "Catloaf",
+      "author": "swgmstr69",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/Catloaf/comments/1x1nvc5/my_little_loaf/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/suoxlcmejguh1.jpeg",
+      "width": 3024,
+      "height": 4032,
+      "thumbnail": "https://preview.redd.it/suoxlcmejguh1.jpeg?width=640&crop=smart&auto=webp&s=aeffd08fa52b0493c7f4d78244d24c73e3432ec5",
+      "rank": 73,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-10T13:22:40+00:00"
+    },
     {
       "date": "2026-10-09",
       "title": "My kitten Spyro is growing up",
