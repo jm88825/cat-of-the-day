@@ -1,0 +1,45 @@
+{
+  "source": "x",
+  "date": "2026-10-11",
+  "postUrl": "https://x.com/johnkensil/status/2108984648164368746",
+  "authorHandle": "johnkensil",
+  "authorName": "John F Kensil",
+  "likes": 0,
+  "title": "What my kitten knocks off my counter",
+  "text": "What my kitten knocks off my counter https://t.co/isDWLOc9Yo",
+  "blurb": "Filed by their human under \"What my kitten knocks off my counter\": a tiny gray tabby on a slow, tail-up patrol past the faucet, the basil and one very suspicious plastic cup. Nothing on that counter looks safe.",
+  "xMedia": {
+    "duration_ms": 7733,
+    "height": 1080,
+    "media_key": "13_2108984564014075906",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2108984564014075906/img/CxK2eGs76GHARVkh.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 832000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2108984564014075906/vid/avc1/640x360/wYEWGrIvUEmDTjC5.mp4"
+      },
+      {
+        "bit_rate": 256000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2108984564014075906/vid/avc1/480x270/CefQSlwSqSZEYJ13.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2108984564014075906/pl/hKCBEO7T7NEo8OOR.m3u8"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2108984564014075906/vid/avc1/1280x720/cb37xqnrF85k5Cjp.mp4"
+      },
+      {
+        "bit_rate": 10368000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2108984564014075906/vid/avc1/1920x1080/zuScJ4UEnePIxrYy.mp4"
+      }
+    ],
+    "width": 1920
+  }
+}
