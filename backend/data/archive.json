@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-12T13:38:37+00:00",
+  "updatedAt": "2026-10-13T13:32:31+00:00",
   "days": [
+    {
+      "date": "2026-10-13",
+      "title": "Siamese foster baby has case of the Mondays",
+      "subreddit": "IllegallySmolCats",
+      "author": "WhatIsTheTeaToday",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/IllegallySmolCats/comments/1x44pwe/siamese_foster_baby_has_case_of_the_mondays/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/mjcx2zse02vh1.jpeg",
+      "width": 3024,
+      "height": 4032,
+      "thumbnail": "https://preview.redd.it/mjcx2zse02vh1.jpeg?width=640&crop=smart&auto=webp&s=a5d3606aa2964221842293b094d27ab0e641ad04",
+      "rank": 31,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-13T13:32:31+00:00"
+    },
     {
       "date": "2026-10-12",
       "title": "My cat has two moods: sleeping and causing problems.\"",
