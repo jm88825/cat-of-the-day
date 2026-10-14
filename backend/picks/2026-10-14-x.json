@@ -1,0 +1,26 @@
+{
+  "source": "x",
+  "date": "2026-10-14",
+  "postUrl": "https://x.com/KingHumour17/status/2110103984006721733",
+  "authorHandle": "KingHumour17",
+  "authorName": "king Humour",
+  "likes": 11,
+  "title": "I bought my kitten meat today and it was really showing me his various skills",
+  "text": "I bought my kitten meat today and it was really showing me his various skills and talents just to get the meat  🫣 https://t.co/dBZdLSLIYh",
+  "blurb": "Their human bought the kitten some meat, and the tiny black kitten put on a whole show of skills and talents just to earn a bite. Here the hopeful little one looks up at the skewers, mouth open, ready for the prize.",
+  "xMedia": {
+    "duration_ms": 25623,
+    "height": 1920,
+    "media_key": "13_2110103059938279424",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2110103059938279424/img/BNMKtn18iR-4k1Fy.jpg",
+    "type": "video",
+    "variants": [
+      {"bit_rate": 10368000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2110103059938279424/vid/avc1/1080x1920/8sPQ8DxAOB46RbuT.mp4"},
+      {"bit_rate": 950000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2110103059938279424/vid/avc1/480x852/9NZmHVj0OcNKV8Kz.mp4"},
+      {"content_type": "application/x-mpegURL", "url": "https://video.twimg.com/amplify_video/2110103059938279424/pl/e8DkJ_tn3qh-P5p3.m3u8"},
+      {"bit_rate": 2176000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2110103059938279424/vid/avc1/720x1280/d60fDqKPL3ICnDng.mp4"},
+      {"bit_rate": 632000, "content_type": "video/mp4", "url": "https://video.twimg.com/amplify_video/2110103059938279424/vid/avc1/320x568/h7U67JacBe5cQtkd.mp4"}
+    ],
+    "width": 1080
+  }
+}
