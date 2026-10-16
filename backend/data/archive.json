@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-15T13:43:44+00:00",
+  "updatedAt": "2026-10-16T13:43:22+00:00",
   "days": [
+    {
+      "date": "2026-10-16",
+      "title": "My grandmother's cat Snowflake, 1910",
+      "subreddit": "aww",
+      "author": "dittidot",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/aww/comments/1x74817/my_grandmothers_cat_snowflake_1910/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/m8rhr8c1nqvh1.jpeg",
+      "width": 1161,
+      "height": 2016,
+      "thumbnail": "https://preview.redd.it/m8rhr8c1nqvh1.jpeg?width=640&crop=smart&auto=webp&s=786f19241246e885376c84824ede2a108d19dee8",
+      "rank": 5,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-16T13:43:22+00:00"
+    },
     {
       "date": "2026-10-15",
       "title": "We had to feed our cat medicine with a syringe",
