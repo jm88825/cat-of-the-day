@@ -1,0 +1,40 @@
+{
+  "source": "x",
+  "date": "2026-10-17",
+  "postUrl": "https://x.com/LadyandHannah/status/2110875130159067497",
+  "authorHandle": "LadyandHannah",
+  "authorName": "Lady, Hannah and Hayden 🏳️‍🌈🐾",
+  "likes": 56,
+  "title": "My kitten energy is back in full force!",
+  "text": "My kitten energy is back in full force! ❣️🐈‍⬛🐾🏳️‍🌈 Hayden https://t.co/DjMsIx5EjH",
+  "blurb": "Their human says the kitten energy is back in full force, and this little black cat proves it, zooming across a fluffy pastel rug and pouncing on a tiny ball at top speed.",
+  "xMedia": {
+    "duration_ms": 20935,
+    "height": 1280,
+    "media_key": "13_2110875078137126912",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2110875078137126912/img/_pPQ5d4sr_ZRNj31.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2110875078137126912/vid/avc1/320x568/wZ1lxDrFRUUrIDXc.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2110875078137126912/vid/avc1/480x852/UnUbz3x70GO-WEgk.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2110875078137126912/vid/avc1/720x1280/6ltDg4MhLeCCxb1i.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2110875078137126912/pl/Cl87ndxIG3esXKrp.m3u8"
+      }
+    ],
+    "width": 720
+  }
+}
