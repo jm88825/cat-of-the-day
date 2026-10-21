@@ -1,6 +1,25 @@
 {
-  "updatedAt": "2026-10-20T13:44:55+00:00",
+  "updatedAt": "2026-10-21T13:44:08+00:00",
   "days": [
+    {
+      "date": "2026-10-21",
+      "title": "So, what do you think about my kitchen sponge?",
+      "subreddit": "IllegallySmolCats",
+      "author": "harmless-rabbit",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/IllegallySmolCats/comments/1xb1d8t/so_what_do_you_think_about_my_kitchen_sponge/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/ja8kw7oj9owh1.jpeg",
+      "width": 1440,
+      "height": 1440,
+      "thumbnail": "https://preview.redd.it/ja8kw7oj9owh1.jpeg?width=640&crop=smart&auto=webp&s=2f2e9913d9d541d3babd4813bdf214016ce78db4",
+      "rank": 48,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-21T13:44:08+00:00"
+    },
     {
       "date": "2026-10-20",
       "title": "Cutie photos of my kitten from last night",
