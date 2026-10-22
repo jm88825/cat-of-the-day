@@ -1,0 +1,39 @@
+{
+  "source": "x",
+  "date": "2026-10-22",
+  "postUrl": "https://x.com/_YorkshireLass_/status/2112641008060203253",
+  "authorHandle": "_YorkshireLass_",
+  "authorName": "Gemma 💕",
+  "likes": 14,
+  "title": "My kitten Jessie was helping out",
+  "text": "My kitten Jessie was helping out 🤣🤣 (yes that’s cat number 4) I’m a crazy cat lady 🤣 https://t.co/KgsSQiH8oJ",
+  "blurb": "Jessie the kitten (cat number four in the house, per their human) perches on the TV stand to help watch the football, at one point stretching up to bat at the players on screen.",
+  "xMedia": {
+    "duration_ms": 31470,
+    "height": 1280,
+    "media_key": "13_2112640950144999424",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2112640950144999424/vid/avc1/320x568/kX8Utz09OKiIuVhN.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2112640950144999424/vid/avc1/480x852/vhX3jQAksZQZj41i.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2112640950144999424/vid/avc1/720x1280/mQRTIJskEz-wE9P0.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2112640950144999424/pl/YNOl6OXHliyJ6s3B.m3u8"
+      }
+    ],
+    "width": 720
+  }
+}
