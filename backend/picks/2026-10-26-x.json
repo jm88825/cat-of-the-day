@@ -1,0 +1,40 @@
+{
+  "source": "x",
+  "date": "2026-10-26",
+  "postUrl": "https://x.com/JadeFox42/status/2114421324030542065",
+  "authorHandle": "JadeFox42",
+  "authorName": "Jade Fawkes (Dark god of sleep)",
+  "likes": 15,
+  "title": "My kitten decided I needed to go live for 3 minutes without telling me",
+  "text": "Well, my kitten decided I needed to go live for 3 minutes without telling me. 🤣 https://t.co/Pha6ZBgQUX",
+  "blurb": "A curious tabby kitten perched in front of a streaming setup apparently took matters into their own paws and started a three-minute live stream without telling their human. Here, the tiny producer studies the monitor like they run the channel.",
+  "xMedia": {
+    "duration_ms": 21703,
+    "height": 1280,
+    "media_key": "13_2114421277205385216",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2114421277205385216/img/UNZxumtmmbKO1Rkh.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2114421277205385216/vid/avc1/320x568/_Gem11mspk3Vh71Q.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2114421277205385216/vid/avc1/480x852/y1xW8ebDtCH3AuZ8.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2114421277205385216/vid/avc1/720x1280/s5JYBY9dImynX1XC.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2114421277205385216/pl/WVxg6mjLxDwweNh8.m3u8"
+      }
+    ],
+    "width": 720
+  }
+}
