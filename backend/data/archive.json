@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-10-26T13:45:59+00:00",
+  "updatedAt": "2026-10-27T13:50:35+00:00",
   "days": [
+    {
+      "date": "2026-10-27",
+      "title": "Hello ther... oh",
+      "subreddit": "cats",
+      "author": "Mimikyu_9x",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/cats/comments/1xgn6c9/hello_ther_oh/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/6ji4mp543zxh1.jpeg",
+      "width": 1188,
+      "height": 1584,
+      "thumbnail": "https://preview.redd.it/6ji4mp543zxh1.jpeg?width=640&crop=smart&auto=webp&s=dfc7ad91ef91dc5215dabb293edba58edde32676",
+      "rank": 4,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-27T13:50:35+00:00",
+      "blurb": "Hello there... oh! A sleek black cat with a tail held high comes trotting over to greet an outstretched hand, caught mid-step in a blur of eager paws. Some friends just can't wait to say hi."
+    },
     {
       "date": "2026-10-26",
       "title": "My kitten decided I needed to go live for 3 minutes without telling me",
