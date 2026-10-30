@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-10-29T13:45:05+00:00",
+  "updatedAt": "2026-10-30T13:47:33+00:00",
   "days": [
+    {
+      "date": "2026-10-30",
+      "title": "Shes 1 lb of claws and hungry",
+      "subreddit": "IllegallySmolCats",
+      "author": "electrogourd",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/IllegallySmolCats/comments/1xj4d3g/shes_1_lb_of_claws_and_hungry/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/9f0doiuntiyh1.jpeg",
+      "width": 1440,
+      "height": 2560,
+      "thumbnail": "https://preview.redd.it/9f0doiuntiyh1.jpeg?width=640&crop=smart&auto=webp&s=83671fecdf05523b2ff5de804ec1be91b42d5df3",
+      "rank": 35,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-10-30T13:47:33+00:00",
+      "blurb": "Just one pound of tiny black kitten and, per her human, all claws and hunger. Here she clambers up the side of the box her first cat tree came in, too excited to wait for it to be built."
+    },
     {
       "date": "2026-10-29",
       "title": "My kitten seems to be enjoying the Leafs game",
