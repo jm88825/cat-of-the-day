@@ -1,0 +1,45 @@
+{
+  "source": "x",
+  "date": "2026-10-31",
+  "postUrl": "https://x.com/camb59399414/status/2116026753529401793",
+  "authorHandle": "camb59399414",
+  "authorName": "cam b",
+  "likes": 0,
+  "title": "My kitten is absolutely obsessed with when I play Osrs",
+  "text": "I don't know why or how this started, but my kitten is absolutely obsessed with when I play Osrs on my phone, or computer. She sits there and stares intently into the screen waiting for something to happen. Over the past few days, it's evolved into something even more https://t.co/9yNB0mIEDQ",
+  "blurb": "Their human has no idea how it started, but this kitten is obsessed with watching them play Old School RuneScape. Here the calico sits over the phone on the rug, staring intently at the screen and waiting for something to happen.",
+  "xMedia": {
+    "duration_ms": 13271,
+    "height": 1920,
+    "media_key": "13_2116026714249703424",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2116026714249703424/img/SsUlPA_ToUCpRvCa.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116026714249703424/vid/avc1/320x568/cm-_eP8ZFaGUjRsA.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116026714249703424/vid/avc1/720x1280/sFtzYd8EfS7xlS0X.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2116026714249703424/pl/lla_-zYpwnt1xW2O.m3u8"
+      },
+      {
+        "bit_rate": 10368000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116026714249703424/vid/avc1/1080x1920/J6-2PbTQlznyYrZl.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116026714249703424/vid/avc1/480x852/vJ1NWxYpZAvje2hE.mp4"
+      }
+    ],
+    "width": 1080
+  }
+}
