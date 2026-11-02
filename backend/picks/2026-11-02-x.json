@@ -1,0 +1,40 @@
+{
+  "source": "x",
+  "date": "2026-11-02",
+  "postUrl": "https://x.com/Janice_M_Audio/status/2116603313659801861",
+  "authorHandle": "Janice_M_Audio",
+  "authorName": "Janice Marie | Sound Designer Open For Work",
+  "likes": 1,
+  "title": "My kitten Luka's favorite toy is a freaking chip bag clip",
+  "text": "My kitten Luka’s favorite toy is a freaking chip bag clip 😭😭😭 https://t.co/dIjw6Abqyl",
+  "blurb": "Forget fancy cat toys: Luka the white kitten has picked a humble chip bag clip as the best toy in the house. Here, Luka creeps out from under the TV stand, eyes locked on the clip lying on the floor, ready to pounce.",
+  "xMedia": {
+    "duration_ms": 67031,
+    "height": 1280,
+    "media_key": "13_2116603038987071488",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2116603038987071488/img/4y8i9l-Sn180b-JI.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116603038987071488/vid/avc1/320x568/ZVlr8UAN64Nzb0Fk.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116603038987071488/vid/avc1/480x852/akV0jaVtKxFoYzab.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2116603038987071488/vid/avc1/720x1280/nVGjg8b37Neh1iZQ.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2116603038987071488/pl/dtEzF5_e4hVmpU1Q.m3u8"
+      }
+    ],
+    "width": 720
+  }
+}
