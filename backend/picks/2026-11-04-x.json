@@ -1,0 +1,50 @@
+{
+  "source": "x",
+  "date": "2026-11-04",
+  "postUrl": "https://x.com/britttlifts/status/2117649916122272130",
+  "authorHandle": "britttlifts",
+  "authorName": "thicc n tired",
+  "likes": 121,
+  "title": "Can you guys watch my kitten for me real quick? Thanks!",
+  "text": "Can you guys watch my kitten for me real quick? Thanks!",
+  "blurb": "Their human ducked out and left the internet on kitten-sitting duty. A ginger-and-white tabby sits on the tiled floor with amber eyes locked on the camera, white mittens tucked, waiting for the babysitter to clock in.",
+  "xMedia": {
+    "duration_ms": 47898,
+    "height": 3840,
+    "media_key": "13_2117649815089659904",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2117649815089659904/img/sR025GXGSPQNAld1.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/vid/avc1/720x1280/6vestKkDnjjX1Koi.mp4"
+      },
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/vid/avc1/320x568/Y2rmQx1BmCzHitfM.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/pl/-mDaIL0NjwOCzX4w.m3u8?v=cfc"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/vid/avc1/480x852/91eK-oUyJF027cj7.mp4"
+      },
+      {
+        "bit_rate": 25128000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/vid/avc1/2160x3840/_QEF2S0lbVqTMbsA.mp4"
+      },
+      {
+        "bit_rate": 10368000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2117649815089659904/vid/avc1/1080x1920/bU8iC7Ay2jUAv2Md.mp4"
+      }
+    ],
+    "width": 2160
+  }
+}
