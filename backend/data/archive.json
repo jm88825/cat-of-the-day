@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-11-07T14:48:52+00:00",
+  "updatedAt": "2026-11-08T14:45:34+00:00",
   "days": [
+    {
+      "date": "2026-11-08",
+      "title": "boneless",
+      "subreddit": "catsareliquid",
+      "author": "chubazxx",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/catsareliquid/comments/1xqlcrw/boneless/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/mlk8mj9jaa0i1.jpeg",
+      "width": 4284,
+      "height": 5712,
+      "thumbnail": "https://preview.redd.it/mlk8mj9jaa0i1.jpeg?width=640&crop=smart&auto=webp&s=1c77f360ce62044fe52d36689871768ef0bd5124",
+      "rank": 95,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-11-08T14:45:34+00:00",
+      "blurb": "Proof that cats are liquid: this orange tabby has poured itself into a round bed next to a computer desk, one leg pointed at the ceiling and head flipped upside down. Boneless, as advertised."
+    },
     {
       "date": "2026-11-07",
       "title": "My kitten discovered the studio today",
