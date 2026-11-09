@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-11-08T14:45:34+00:00",
+  "updatedAt": "2026-11-09T14:40:41+00:00",
   "days": [
+    {
+      "date": "2026-11-09",
+      "title": "Priscilla wants Reddit to see her today.",
+      "subreddit": "blackcats",
+      "author": "flyawaybye",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/blackcats/comments/1xr3isv/priscilla_wants_reddit_to_see_her_today/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/odk2z8o49f0i1.jpeg",
+      "width": 3024,
+      "height": 4032,
+      "thumbnail": "https://preview.redd.it/odk2z8o49f0i1.jpeg?width=640&crop=smart&auto=webp&s=8de5dbce75c60ef4f6c42bb5767d52d5fa306b7f",
+      "rank": 50,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-11-09T14:40:41+00:00",
+      "blurb": "Priscilla has requested an audience with Reddit, and she's taking it seriously: this sleek black cat is curled up on a striped chair, gazing straight up at the camera with big golden eyes. Consider yourself seen."
+    },
     {
       "date": "2026-11-08",
       "title": "boneless",
