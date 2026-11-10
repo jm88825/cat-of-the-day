@@ -1,0 +1,40 @@
+{
+  "source": "x",
+  "date": "2026-11-10",
+  "postUrl": "https://x.com/relativelysmll/status/2119732493238825100",
+  "authorHandle": "relativelysmll",
+  "authorName": "small \ud83d\udc37\ud83d\udc51\ud83c\udf49",
+  "likes": 13,
+  "title": "Look how big my kitten babies are <3",
+  "text": "Look how big my kitten babies are <3 https://t.co/AUacX9ZQNK",
+  "blurb": "Their human can't get over how big the kitten babies have gotten, and the crew is clearly growing into proper hunters: a gray-and-white kitten crouches on the scratcher, eyes locked on a fluttering feather toy, while a sibling looks on.",
+  "xMedia": {
+    "duration_ms": 11517,
+    "height": 1280,
+    "media_key": "13_2119732461219500032",
+    "preview_image_url": "https://pbs.twimg.com/amplify_video_thumb/2119732461219500032/img/tHfDbIBI6Ai5iEli.jpg",
+    "type": "video",
+    "variants": [
+      {
+        "bit_rate": 632000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2119732461219500032/vid/avc1/320x568/36fEs2QttzantBsT.mp4"
+      },
+      {
+        "bit_rate": 950000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2119732461219500032/vid/avc1/480x852/LcKbvXVJB_cbjXTW.mp4"
+      },
+      {
+        "bit_rate": 2176000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/amplify_video/2119732461219500032/vid/avc1/720x1280/PqlUIwpauuGNNaR7.mp4"
+      },
+      {
+        "content_type": "application/x-mpegURL",
+        "url": "https://video.twimg.com/amplify_video/2119732461219500032/pl/PzXjb606krff2mP_.m3u8"
+      }
+    ],
+    "width": 720
+  }
+}
