@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-10T14:47:27+00:00",
+  "updatedAt": "2026-11-11T14:45:42+00:00",
   "days": [
+    {
+      "date": "2026-11-11",
+      "title": "Why does my kitten remind me of Al Pacino?",
+      "subreddit": null,
+      "author": "too_knowing",
+      "authorHandle": "too_knowing",
+      "authorName": "Nikki",
+      "score": 37,
+      "scoreLabel": "likes",
+      "likes": 37,
+      "permalink": "https://x.com/too_knowing/status/2119898984819171446",
+      "postUrl": "https://x.com/too_knowing/status/2119898984819171446",
+      "postId": "2119898984819171446",
+      "text": "Why does my kitten remind me of Al Pacino? 😭",
+      "width": 3072,
+      "height": 4096,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HWtk4pqbkAAByq_.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HWtk4pqbkAAByq_.jpg?name=small",
+      "source": "x",
+      "blurb": "Their human can't unsee it: this tortoiseshell kitten has a split-color face, wide amber eyes, and an intense, slightly worried stare that apparently channels Al Pacino.",
+      "pickedAt": "2026-11-11T14:45:42+00:00"
+    },
     {
       "date": "2026-11-10",
       "title": "Look how big my kitten babies are <3",
