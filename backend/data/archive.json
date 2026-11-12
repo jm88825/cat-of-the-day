@@ -1,6 +1,32 @@
 {
-  "updatedAt": "2026-11-11T14:45:42+00:00",
+  "updatedAt": "2026-11-12T14:47:27+00:00",
   "days": [
+    {
+      "date": "2026-11-12",
+      "title": "🇹🇷 of course!",
+      "subreddit": "cats",
+      "author": "talkk_sickk",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/cats/comments/1xtl8mk/of_course/",
+      "mediaType": "video",
+      "mediaUrl": "https://v.redd.it/4q5qhysy801i1/CMAF_360.mp4",
+      "width": 360,
+      "height": 476,
+      "thumbnail": "https://external-preview.redd.it/cDdxemg1bnk4MDFpMWcx-sQwsDZsjB5myD2ctHSMQ63BrBLDfESQH5NhRp_n.jpeg?width=320&crop=smart&auto=webp&s=59eea36f112f9fe0c7ff5e203229ef0d70a9fffb",
+      "hlsUrl": "https://v.redd.it/4q5qhysy801i1/HLSPlaylist.m3u8",
+      "dashUrl": "https://v.redd.it/4q5qhysy801i1/DASHPlaylist.mpd",
+      "hasAudio": false,
+      "hlsHasAudio": false,
+      "dashHasAudio": false,
+      "mp4HasAudio": false,
+      "rank": 15,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-11-12T14:47:27+00:00",
+      "blurb": "Caught on an elevator camera: a man in a striped shirt scoops up a tabby cat and proudly holds it right up to the lens to show it off, before setting it back down. The poster's caption simply credits Turkey, of course."
+    },
     {
       "date": "2026-11-11",
       "title": "Why does my kitten remind me of Al Pacino?",
