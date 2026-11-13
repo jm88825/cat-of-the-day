@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-11-12T14:47:27+00:00",
+  "updatedAt": "2026-11-13T14:48:41+00:00",
   "days": [
+    {
+      "date": "2026-11-13",
+      "title": "My boy Les",
+      "subreddit": "TuxedoCats",
+      "author": "cleecleekilldie",
+      "score": null,
+      "permalink": "https://www.reddit.com/r/TuxedoCats/comments/1xut3jp/my_boy_les/",
+      "mediaType": "image",
+      "mediaUrl": "https://i.redd.it/cciemdauu91i1.jpeg",
+      "width": 1960,
+      "height": 4032,
+      "thumbnail": "https://preview.redd.it/cciemdauu91i1.jpeg?width=640&crop=smart&auto=webp&s=9503d36c11bc8a447e21a3358af0ec4b67198ff0",
+      "rank": 92,
+      "source": "reddit",
+      "fetchedVia": "rss",
+      "selection": "random",
+      "scoreLabel": "upvotes",
+      "pickedAt": "2026-11-13T14:48:41+00:00",
+      "blurb": "Meet Les, a fluffy tuxedo with a snowy bib, white mittens, and seriously impressive whiskers. He's draped across his human's lap, gazing straight up at the camera with big golden eyes."
+    },
     {
       "date": "2026-11-12",
       "title": "🇹🇷 of course!",
