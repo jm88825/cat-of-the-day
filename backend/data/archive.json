@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-17T14:43:05+00:00",
+  "updatedAt": "2026-11-18T14:43:26+00:00",
   "days": [
+    {
+      "date": "2026-11-18",
+      "title": "My kitten stole my cheeseburger!",
+      "subreddit": null,
+      "author": "nunu2910111",
+      "authorHandle": "nunu2910111",
+      "authorName": "👾",
+      "score": 6,
+      "scoreLabel": "likes",
+      "likes": 6,
+      "permalink": "https://x.com/nunu2910111/status/2122994028157317524",
+      "postUrl": "https://x.com/nunu2910111/status/2122994028157317524",
+      "postId": "2122994028157317524",
+      "text": "My kitten stole my cheeseburger🧀🍔!",
+      "width": 1536,
+      "height": 2048,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HXZjynkXoAAzym8.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HXZjynkXoAAzym8.jpg?name=small",
+      "source": "x",
+      "blurb": "Caught red-pawed: this fluffy white cat reportedly swiped their human's cheeseburger and is wearing the evidence, a tiny smear of yellow cheese on the cheek, while looking utterly unbothered about it.",
+      "pickedAt": "2026-11-18T14:43:26+00:00"
+    },
     {
       "date": "2026-11-17",
       "title": "The husband stealer",
