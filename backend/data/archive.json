@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-18T14:43:26+00:00",
+  "updatedAt": "2026-11-19T14:45:18+00:00",
   "days": [
+    {
+      "date": "2026-11-19",
+      "title": "My kitten so moe",
+      "subreddit": null,
+      "author": "YUN6UNA",
+      "authorHandle": "YUN6UNA",
+      "authorName": "Yundun",
+      "score": 10,
+      "scoreLabel": "likes",
+      "likes": 10,
+      "permalink": "https://x.com/YUN6UNA/status/2123411849722859588",
+      "postUrl": "https://x.com/YUN6UNA/status/2123411849722859588",
+      "postId": "2123411849722859588",
+      "text": "my kitten so moe",
+      "width": 4080,
+      "height": 3072,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HXffzY7XIAAOjNF.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HXffzY7XIAAOjNF.jpg?name=small",
+      "source": "x",
+      "blurb": "Peak cozy: this tortoiseshell kitty has curled into a near-perfect round loaf on a striped blanket, tail wrapped all the way around and one paw tucked over the face like a do-not-disturb sign. Their human's verdict: so moe.",
+      "pickedAt": "2026-11-19T14:45:18+00:00"
+    },
     {
       "date": "2026-11-18",
       "title": "My kitten stole my cheeseburger!",
