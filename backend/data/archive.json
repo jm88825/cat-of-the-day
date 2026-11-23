@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-22T14:49:21+00:00",
+  "updatedAt": "2026-11-23T14:45:42+00:00",
   "days": [
+    {
+      "date": "2026-11-23",
+      "title": "My kitten has a new friend",
+      "subreddit": null,
+      "author": "RisottoPesto",
+      "authorHandle": "RisottoPesto",
+      "authorName": "Ris.otto✶",
+      "score": 3,
+      "scoreLabel": "likes",
+      "likes": 3,
+      "permalink": "https://x.com/RisottoPesto/status/2124869888024150503",
+      "postUrl": "https://x.com/RisottoPesto/status/2124869888024150503",
+      "postId": "2124869888024150503",
+      "text": "My kitten has a new friend",
+      "width": 3072,
+      "height": 4096,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HX0N2RlaoAEpeqt.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HX0N2RlaoAEpeqt.jpg?name=small",
+      "source": "x",
+      "blurb": "Their human says this kitty has a new friend: a little purple crocheted octopus, now perched right on top of its head. The cat's calm, half-lidded stare suggests the friendship is still being evaluated.",
+      "pickedAt": "2026-11-23T14:45:42+00:00"
+    },
     {
       "date": "2026-11-22",
       "title": "Who allowed my kitten to get this big???",
@@ -1371,33 +1394,6 @@
       "scoreLabel": "upvotes",
       "backfilled": true,
       "pickedAt": "2026-09-30T00:53:08+00:00"
-    },
-    {
-      "date": "2026-09-24",
-      "title": "Peak Relaxation>",
-      "subreddit": "cats",
-      "author": "BonolotaSen23",
-      "score": null,
-      "permalink": "https://www.reddit.com/r/cats/comments/1wp9wlh/peak_relaxation/",
-      "mediaType": "video",
-      "mediaUrl": "https://v.redd.it/uvtarndajirh1/CMAF_720.mp4",
-      "width": 720,
-      "height": 1280,
-      "thumbnail": "https://external-preview.redd.it/MTJuOTIyNmFqaXJoMc5f9d3e43SE22pL5Te5G2AzNvwhFmWQIXvxdUEKv2_F.png?width=320&crop=smart&auto=webp&s=ea58aa1caa51d8f2f23a5842b864a50606715cf3",
-      "dashUrl": "https://v.redd.it/uvtarndajirh1/DASHPlaylist.mpd",
-      "hasAudio": true,
-      "mp4HasAudio": false,
-      "rank": 2,
-      "source": "reddit-rss",
-      "scoreLabel": "upvotes",
-      "backfilled": true,
-      "pickedAt": "2026-09-30T00:53:09+00:00",
-      "hlsUrl": "https://v.redd.it/uvtarndajirh1/HLSPlaylist.m3u8",
-      "hlsHasAudio": true,
-      "dashHasAudio": true,
-      "audioMeanDb": -28.7,
-      "audioMaxDb": -12.6,
-      "audioQuiet": false
     }
   ]
 }
