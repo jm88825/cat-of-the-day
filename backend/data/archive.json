@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-23T14:45:42+00:00",
+  "updatedAt": "2026-11-24T14:43:09+00:00",
   "days": [
+    {
+      "date": "2026-11-24",
+      "title": "My kitten who's typically rude was desperate to wake me up",
+      "subreddit": null,
+      "author": "clovrchainongcv",
+      "authorHandle": "clovrchainongcv",
+      "authorName": "JOLLY erintopia˚ʚ♡ɞ˚❄️",
+      "score": 27,
+      "scoreLabel": "likes",
+      "likes": 27,
+      "permalink": "https://x.com/clovrchainongcv/status/2124896089547374653",
+      "postUrl": "https://x.com/clovrchainongcv/status/2124896089547374653",
+      "postId": "2124896089547374653",
+      "text": "My kitten who’s typically rude was desperate to wake me up",
+      "width": 2048,
+      "height": 1536,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HX0lu3tXcAApknk.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HX0lu3tXcAApknk.jpg?name=small",
+      "source": "x",
+      "blurb": "Their human says this black kitten is usually rude, but this morning it was desperate to wake them up. Here it settles in on the blanket and accepts a head scratch like it was the plan all along.",
+      "pickedAt": "2026-11-24T14:43:09+00:00"
+    },
     {
       "date": "2026-11-23",
       "title": "My kitten has a new friend",
@@ -1376,24 +1399,6 @@
       "audioMeanDb": -50.9,
       "audioMaxDb": -32.9,
       "audioQuiet": true
-    },
-    {
-      "date": "2026-09-25",
-      "title": "My cat, Captain Tuna, and her one black bean",
-      "subreddit": "aww",
-      "author": "hhhhhhd5",
-      "score": null,
-      "permalink": "https://www.reddit.com/r/aww/comments/1wpz4e4/my_cat_captain_tuna_and_her_one_black_bean/",
-      "mediaType": "image",
-      "mediaUrl": "https://i.redd.it/mdn70n2koorh1.jpeg",
-      "width": 1086,
-      "height": 1448,
-      "thumbnail": "https://preview.redd.it/mdn70n2koorh1.jpeg?width=640&crop=smart&auto=webp&s=fd733d3b670c8681ea8d7279c2760642dc77a217",
-      "rank": 1,
-      "source": "reddit-rss",
-      "scoreLabel": "upvotes",
-      "backfilled": true,
-      "pickedAt": "2026-09-30T00:53:08+00:00"
     }
   ]
 }
