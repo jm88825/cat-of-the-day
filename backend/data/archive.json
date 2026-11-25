@@ -1,6 +1,29 @@
 {
-  "updatedAt": "2026-11-24T14:43:09+00:00",
+  "updatedAt": "2026-11-25T14:48:29+00:00",
   "days": [
+    {
+      "date": "2026-11-25",
+      "title": "Unknowingly playing with my kitten Barnacle this morning",
+      "subreddit": null,
+      "author": "heatherfact",
+      "authorHandle": "heatherfact",
+      "authorName": "Hezz Szilagyi",
+      "score": 0,
+      "scoreLabel": "likes",
+      "likes": 0,
+      "permalink": "https://x.com/heatherfact/status/2125597203863683547",
+      "postUrl": "https://x.com/heatherfact/status/2125597203863683547",
+      "postId": "2125597203863683547",
+      "text": "@ctv_marke unknowingly playing with my kitten Barnacle this morning. 😻",
+      "width": 3220,
+      "height": 1943,
+      "mediaType": "image",
+      "mediaUrl": "https://pbs.twimg.com/media/HX-jY2qaEAArPak.jpg",
+      "thumbnail": "https://pbs.twimg.com/media/HX-jY2qaEAArPak.jpg?name=small",
+      "source": "x",
+      "blurb": "The weatherman on the morning news was just pointing at a flood map, but a kitten named Barnacle decided that moving hand was a toy. Here Barnacle's little silhouette stretches up to paw at the screen mid-forecast.",
+      "pickedAt": "2026-11-25T14:48:29+00:00"
+    },
     {
       "date": "2026-11-24",
       "title": "My kitten who's typically rude was desperate to wake me up",
@@ -1372,33 +1395,6 @@
       "scoreLabel": "upvotes",
       "backfilled": true,
       "pickedAt": "2026-09-30T00:53:07+00:00"
-    },
-    {
-      "date": "2026-09-26",
-      "title": "My old boy loves his face massages",
-      "subreddit": "cats",
-      "author": "Eloquentdyslexic",
-      "score": null,
-      "permalink": "https://www.reddit.com/r/cats/comments/1wr7kos/my_old_boy_loves_his_face_massages/",
-      "mediaType": "video",
-      "mediaUrl": "https://v.redd.it/4m7j15wqwyrh1/CMAF_360.mp4",
-      "width": 360,
-      "height": 640,
-      "thumbnail": "https://external-preview.redd.it/ZGFyc2ZicHF3eXJoMSR3UnzgkPQURFxdUnHUw_NdiM5s0WfBXS8HkF6eda2E.jpeg?width=640&crop=smart&auto=webp&s=ecacd03ceaa3df320e55122e77dc458acf31e277",
-      "dashUrl": "https://v.redd.it/4m7j15wqwyrh1/DASHPlaylist.mpd",
-      "hasAudio": true,
-      "mp4HasAudio": false,
-      "rank": 4,
-      "source": "reddit-rss",
-      "scoreLabel": "upvotes",
-      "backfilled": true,
-      "pickedAt": "2026-09-30T00:53:07+00:00",
-      "hlsUrl": "https://v.redd.it/4m7j15wqwyrh1/HLSPlaylist.m3u8",
-      "hlsHasAudio": true,
-      "dashHasAudio": true,
-      "audioMeanDb": -50.9,
-      "audioMaxDb": -32.9,
-      "audioQuiet": true
     }
   ]
 }
